@@ -9,6 +9,7 @@
                 v-for="post in this.$store.state.data"
                 :key="post.id"
                 :src="largeUrlImage + post.poster_path"
+                class="cover"
         >
         </v-carousel-item>
 
@@ -27,5 +28,7 @@
 </script>
 
 <style scoped>
-
+    .cover{
+        background-size: cover;
+    }
 </style>

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import FilmsList from "./components/FilmsList";
 import HomePage from "./components/HomePage"
+import FilmCard from "./components/FilmCard";
 
 Vue.use(Router);
 
@@ -15,9 +15,11 @@ export default new Router({
       component: HomePage
     },
     {
-      path: '/FilmsList',
-      name: 'FilmsList',
-      component: FilmsList
+      path: '/film-card/:id',
+      props: true,
+      name: 'FilmCard',
+      component: FilmCard
     }
+
   ]
 })
