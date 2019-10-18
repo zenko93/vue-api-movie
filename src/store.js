@@ -1,31 +1,69 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import {apiKey, url} from './components/constants'
 
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {
-    data: ''
-  },
-  mutations: {
-    changeData(state, payload){
-      state.data = payload
-    }
-  },
-  actions: {
-    getData({commit}){
-      const apiKey = '?api_key=97bb1a5627fcf0148c38c1a52c2823fd';
-      axios
-          .get(`https://api.themoviedb.org/3/movie/top_rated${apiKey}`)
-          .then(data => {
-            commit('changeData', data.data.results);
-            return data
-          })
-          .then(response => {console.log(response)})
+    state: {
+        data: [],
+        genres: [],
+        film: []
+    },
+    mutations: {
+        changeData(state, payload) {
+            state.data = payload
+        },
+        getGenres(state, payload) {
+            state.genres = payload
+        },
+        getFilm(state, payload) {
+            state.film = payload
+        }
+    },
+    actions: {
+        getData({commit}){
 
-          }
-    }
+            axios
+                .get(`${url}movie/top_rated${apiKey}`)
+                .then(response => {
+                    commit('changeData', response.data.results);
+                    return response.data.results
+                })
+        },
+        getGenres({commit}){
+            axios
+                .get(`${url}genre/movie/list${apiKey}`)
+                .then(response => {
+                    commit('getGenres', response.data.genres);
+                    return response
+                })
+        },
+        filmById ({commit ,state}, filmId) {
+            let film = state.data.find(film => +film.id === +filmId);
+            if(film){
+                commit('getFilm', film);
+            }
+            else{
+                axios
+                    .get(`${url}movie/${filmId}${apiKey}`)
+                    .then(response => {
+                        commit('getFilm', response.data.results);
+                        return response.data.results
+                    })
+            }
+        }
+    },
+    getters: {
+        getData (state) {
+            return state.data
+        },
+        film (state) {
+            return state.film
+        }
+
+    },
 
 })
