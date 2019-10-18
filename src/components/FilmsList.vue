@@ -20,7 +20,7 @@
                     >
                     </v-img>
 
-                    <v-card-title>{{ post.title }}</v-card-title>
+                    <v-card-title>{{ post.name }}</v-card-title>
 
                     <v-card-text class="text--primary">
                         <div>Vote average: {{ post.vote_average }}</div>
@@ -58,7 +58,7 @@
         data () {
             return {
                 baseUrlImage: 'https://image.tmdb.org/t/p/w185_and_h278_bestv2',
-                posts: this.$store.state.data,
+                posts: this.$store.state.searchPost,
                 page: 1,
                 perPage: 6,
                 pages: 1,
@@ -66,16 +66,23 @@
         },
         methods: {
             paginate (posts) {
+
                 let page = this.page;
                 let perPage = this.perPage;
                 let from = (page * perPage) - perPage;
                 let to = (page * perPage);
                 return posts.slice(from, to)
-            }
+            },
         },
-        mounted (){
+        beforeUpdate (){
+            this.posts = this.$store.state.searchPost;
             this.pages = Math.ceil(this.posts.length / this.perPage);
             console.log(this.page)
+        },
+        watch: {
+          posts(){
+              console.log('Updated')
+            }
         },
         computed: {
             displayedPosts(){

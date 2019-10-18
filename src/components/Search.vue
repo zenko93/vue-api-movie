@@ -1,19 +1,24 @@
 <template>
+    <v-layout class="d-flex row mt-5 mx-4">
     <v-text-field
             type="text"
             v-model="value"
-            class="mx-4"
+            v-on:keyup.enter="searchSubmit"
             flat
             hide-details
             label="Search"
-            prepend-inner-icon="search"
+            prepend-incide-icon="mdi-search"
             solo-inverted
-    ></v-text-field>
+            dense
+    >
+    </v-text-field>
+
+        <v-btn @click="searchSubmit">Search</v-btn>
+    </v-layout>
+
 </template>
 
 <script>
-    import axios from 'axios'
-    import {url, apiKey} from './constants'
 
     export default {
         data(){
@@ -21,15 +26,12 @@
                 value: ''
             }
         },
-
-        watch: {
-            value(){
-                axios
-                    .get(`${url}search/movie${apiKey}&language=en-US&query=${this.value}}`)
-                    .then(response => console.log(response))
-                console.log(this.value)
-            }
+        methods: {
+            searchSubmit() {
+                this.$store.dispatch('searchSubmit', this.value)
+            },
         },
+
         name: "Search"
     }
 </script>

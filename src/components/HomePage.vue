@@ -1,10 +1,13 @@
 <template>
     <v-app>
-        <AppBar></AppBar>
-        <Carousel></Carousel>
-        <Search></Search>
-        <FilmsList></FilmsList>
-        <AppFooter></AppFooter>
+        <v-flex class="d-flex flex-column">
+            <AppBar></AppBar>
+            <Carousel></Carousel>
+            <Search></Search>
+            <FilmsList></FilmsList>
+            <AppFooter></AppFooter>
+        </v-flex>
+
     </v-app>
 </template>
 
