@@ -1,18 +1,19 @@
 <template>
-    <v-carousel
-            cycle
-            height="400"
-            hide-delimiter-background
-            show-arrows-on-hover
-    >
-        <v-carousel-item
-                v-for="post in this.$store.state.data"
-                :key="post.id"
-                :src="largeUrlImage + post.poster_path"
+        <v-carousel
+                cycle
+                height="400"
+                show-arrows-on-hover
+                hide-delimiter-background
         >
-        </v-carousel-item>
+            <v-carousel-item
+                    v-for="post in this.$store.state.data"
+                    :key="post.id"
+                    :src="largeUrlImage + post.poster_path"
+            >
+            </v-carousel-item>
 
-    </v-carousel>
+        </v-carousel>
+
 </template>
 
 <script>
