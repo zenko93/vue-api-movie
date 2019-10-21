@@ -41,7 +41,7 @@
             displayedPosts(){
                 return this.paginate(this.posts)
             }
-        }
+        },
         name: "Pagination"
     }
 </script>
