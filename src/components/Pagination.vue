@@ -1,45 +1,44 @@
 <template>
-    <template>
-        <div class="text-center">
-            <v-pagination
-                    v-for="post in displayedPosts"
-                    v-model="slides"
-                    :length="slides.length"
-                    :total-visible="7"
-                    circle
-            ></v-pagination>
-        </div>
-    </template>
+    <div class="text-center mt-5">
+        <v-pagination
+                v-model="selectedPage"
+                :length="totalPages"
+                :total-visible="7"
+                circle
+        ></v-pagination>
+    </div>
 </template>
 
 <script>
-    export default {
-        data(){
-            return {
-                posts: [],
-                page: 1,
-                perPage: 4,
-                pages: [],
+    import {mapState, mapMutations} from 'vuex'
 
-            }
-        },
-        mounted: {
-            setPages () {
-                let numberOfPages = Math.ceil(this.$store.state.data.length / this.perPage);
-                for (let index = 1; index <= numberOfPages; index++) {
-                    this.pages.push(index);
-                }
+    export default {
+        methods: {
+            ...mapMutations([
+                'SET_SELECTED_PAGE'
+            ]),
+            dispatchFilterMovies () {
+                this.$store.dispatch("filteredPosts", {
+                    page: this.selectedPage
+                });
             },
-            paginate (posts) {
-                let page = this.page;
-                let perPage = this.perPage;
-                let from = (page * perPage) - perPage;
-                let to = (page * perPage)
-            }
         },
         computed: {
-            displayedPosts(){
-                return this.paginate(this.posts)
+            ...mapState({
+                totalPages: state => state.discover.totalPages,
+            }),
+            selectedPage: {
+                get () {
+                    return this.$store.state.discover.selectedPage;
+                },
+                set (page) {
+                    this.SET_SELECTED_PAGE(page);
+                }
+            },
+        },
+        watch: {
+            selectedPage() {
+                this.dispatchFilterMovies()
             }
         },
         name: "Pagination"

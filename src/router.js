@@ -2,10 +2,12 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import HomePage from "./components/HomePage"
 import FilmCard from "./components/FilmCard";
+import Discover from "./components/Discover";
+import Error404 from "./components/Error404";
 
 Vue.use(Router);
 
-export default new Router({
+export const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
@@ -19,6 +21,21 @@ export default new Router({
       props: true,
       name: 'FilmCard',
       component: FilmCard
+    },
+    {
+      path: '/discover/:id',
+      props: true,
+      name: 'Discover',
+      component: Discover
+    },
+    {
+      path: '/page-not-found',
+      name: Error404,
+      component: Error404
+    },
+    {
+      path: '/*',
+      redirect: {name: Error404}
     }
 
   ]

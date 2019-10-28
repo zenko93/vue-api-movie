@@ -1,48 +1,49 @@
 <template>
-<<<<<<< HEAD
     <v-carousel
+            class="mb-3"
             cycle
-            height="400"
             hide-delimiter-background
             show-arrows-on-hover
+            height="400px"
     >
-        <v-carousel-item
-                v-for="post in this.$store.state.data"
-                :key="post.id"
-                :src="largeUrlImage + post.poster_path"
-                class="cover"
-=======
-        <v-carousel
-                cycle
-                height="400"
-                show-arrows-on-hover
-                hide-delimiter-background
->>>>>>> a6d6ac976d9bc3fb4d70964d980a54bf2aa541a1
-        >
+        <div
+                class="my_container">
+
+
             <v-carousel-item
-                    v-for="post in this.$store.state.data"
+                    v-for="post in posts"
                     :key="post.id"
                     :src="largeUrlImage + post.poster_path"
-            >
+                    >
             </v-carousel-item>
+        </div>
 
-        </v-carousel>
 
+    </v-carousel>
 </template>
 
 <script>
+    import {largeUrlImage} from "../constants";
+    import {mapState} from "vuex";
+
     export default {
         data(){
             return{
-                largeUrlImage: 'https://image.tmdb.org/t/p/w600_and_h900_bestv2',
+                largeUrlImage: largeUrlImage,
             }
+        },
+        computed: {
+            ...mapState({
+                posts: state => state.home.getPopular
+            })
         },
         name: "Carousel"
     }
 </script>
 
 <style scoped>
-    .cover{
-        background-size: cover;
+    .my_container {
+        background-color: black;
+        width: 100vw;
     }
 </style>
