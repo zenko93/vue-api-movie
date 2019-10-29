@@ -1,7 +1,7 @@
 <template>
-    <v-app >
-            <v-layout>
-                <v-flex xs12 mx-2 my-2>
+    <v-app>
+        <v-layout>
+            <v-flex xs12 mx-2 my-2>
 
                 <v-card
                         class="d-flex flex-row "
@@ -11,12 +11,16 @@
                             width="300px"
                             height="450px"
                     ></v-img>
-                    <v-card >
-                        <v-list-item-content >
+                    <v-card>
+                        <v-list-item-content>
                             <v-card-title class="flex-row max-h">
                                 {{ film.title || film.name || film.original_title }}
                             </v-card-title>
-                            <v-list-item-subtitle class="ml-3">Vote average: {{ film.vote_average }}</v-list-item-subtitle>
+
+                            <v-list-item-subtitle class="ml-4">
+                                <v-icon color="yellow">mdi-star</v-icon>
+                                Vote average: {{ film.vote_average }}
+                            </v-list-item-subtitle>
                         </v-list-item-content>
 
                         <v-divider></v-divider>
@@ -26,9 +30,15 @@
                         </v-card-text>
                     </v-card>
                 </v-card>
-                    <v-btn class="mt-2 float-right" color="primary"  @click="goBack" >Go Back</v-btn>
-                </v-flex>
-            </v-layout>
+                <v-btn
+                        class="mt-2 float-right"
+                        color="primary"
+                        @click="goBack"
+                >
+                    Go Back
+                </v-btn>
+            </v-flex>
+        </v-layout>
         <AppFooter></AppFooter>
     </v-app>
 
@@ -41,15 +51,21 @@
 
     export default {
         props: ['id'],
-        data(){
-            return{
+        data() {
+            return {
                 baseUrlImage: baseUrlImage,
                 largeUrlImage: largeUrlImage,
             }
         },
         methods: {
             goBack() {
-                return this.$router.go(-1)
+                let realTime = new Date();
+                let endSession = new Date(this.$store.state.registration.newToken.expires_at);
+
+                if (realTime > endSession) {
+                    this.$router.push('/registration')
+                }
+                this.$router.go(-1)
             }
         },
         mounted() {

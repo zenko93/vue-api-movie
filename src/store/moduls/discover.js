@@ -12,7 +12,7 @@ export default {
         categoryId: '',
         filteredPosts: '',
         genresList: [],
-        totalPages: []
+        totalPages: 0
     },
     mutations: {
         SET_SELECTED_YEAR(state, payload) {
