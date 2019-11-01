@@ -1,6 +1,5 @@
 <template>
     <v-app>
-        <AppBar></AppBar>
         <v-container
                 class="fill-height"
                 fluid
@@ -16,7 +15,7 @@
                 >
                     <v-card class="elevation-10">
                         <v-toolbar
-                            color="primary"
+                                color="deep-purple accent-2"
                             dark
                             flat
                         >
@@ -84,13 +83,10 @@
 
             </v-layout>
         </v-container>
-        <AppFooter></AppFooter>
     </v-app>
 </template>
 
 <script>
-    import AppBar from "./AppBar";
-    import AppFooter from "./AppFooter";
 
     export default {
         data() {
@@ -144,10 +140,7 @@
                 console.log(endSession)
             }
         },
-        components: {
-            AppBar,
-            AppFooter
-        },
+
         name: "Registration"
     }
 </script>

@@ -44,12 +44,10 @@
             </v-flex>
         </v-layout>
 
-        <Pagination></Pagination>
     </v-container>
 </template>
 
 <script>
-    import Pagination from './Pagination'
     import {baseUrlImage, imageNotFound} from '../constants'
 
     export default {
@@ -73,10 +71,6 @@
                     this.$router.push('/registration')
                 }
             }
-        },
-
-        components: {
-            Pagination
         },
         name: "FilmsList"
 

@@ -17,11 +17,11 @@
             ...mapMutations([
                 'SET_SELECTED_PAGE'
             ]),
-            dispatchFilterMovies () {
-                this.$store.dispatch("filteredPosts", {
-                    page: this.selectedPage
-                });
-            },
+            // dispatchFilterMovies () {
+            //     this.$store.dispatch("filteredPosts", {
+            //         page: this.selectedPage
+            //     });
+            // },
         },
         computed: {
             ...mapState({
@@ -32,14 +32,15 @@
                     return this.$store.state.discover.selectedPage;
                 },
                 set (page) {
-                    this.SET_SELECTED_PAGE(page);
+                    // this.SET_SELECTED_PAGE(page);
+                    this.$store.dispatch('changePage', page)
                 }
             },
         },
         watch: {
-            selectedPage() {
-                this.dispatchFilterMovies()
-            }
+            // selectedPage() {
+            //     this.dispatchFilterMovies()
+            // }
         },
         name: "Pagination"
     }

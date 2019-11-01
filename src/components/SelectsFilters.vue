@@ -72,7 +72,7 @@
                     return this.$store.state.discover.selectedYear;
                 },
                 set (year) {
-                    this.SET_SELECTED_YEAR(year);
+                    this.$store.dispatch('changeYear', year)
                 }
             },
             selectedGenres: {
@@ -80,7 +80,9 @@
                     return this.$store.state.discover.selectedGenres;
                 },
                 set (genres) {
-                    this.SET_SELECTED_GENRES(genres);
+                    // this.SET_SELECTED_GENRES(genres);
+                    this.$store.dispatch('changeGenres', genres)
+
                 }
             },
             selectedSortBy: {
@@ -88,7 +90,8 @@
                     return this.$store.state.discover.selectedSortBy;
                 },
                 set (sortBy) {
-                    this.SET_SELECTED_SORTBY(sortBy);
+                    // this.SET_SELECTED_SORTBY(sortBy);
+                    this.$store.dispatch('changeSortBy', sortBy)
                 }
             },
         },

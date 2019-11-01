@@ -1,9 +1,7 @@
 <template>
-    <div class="ml-5 mt-2">
+    <div class="ml-5 mt-2 fill-height">
         <h1 class="error-title">404 Error</h1>
         <h2 class="error-content">Oops!—We can't find the page you're looking for.</h2>
-        <v-btn class="primary mr-2" @click="goBack">Go Back</v-btn>
-        <v-btn class="primary" @click="goHome">Go Home</v-btn>
     </div>
 </template>
 

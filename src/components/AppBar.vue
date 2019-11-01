@@ -52,6 +52,8 @@
 
 <script>
     import {mapState} from 'vuex'
+    import cookies from 'vue-cookies'
+
 
     export default {
         data() {
@@ -66,8 +68,9 @@
         },
         methods: {
             verificationSessionExpire() {
+                let tokenExpires = cookies.get('Token').expires_at
                 let realTime = new Date();
-                let endSession = new Date(this.$store.state.registration.newToken.expires_at);
+                let endSession = new Date(tokenExpires);
 
                 if (realTime > endSession) {
                     this.$router.push('/registration')

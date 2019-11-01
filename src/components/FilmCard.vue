@@ -30,22 +30,13 @@
                         </v-card-text>
                     </v-card>
                 </v-card>
-                <v-btn
-                        class="mt-2 float-right"
-                        color="primary"
-                        @click="goBack"
-                >
-                    Go Back
-                </v-btn>
             </v-flex>
         </v-layout>
-        <AppFooter></AppFooter>
     </v-app>
 
 </template>
 
 <script>
-    import AppFooter from './AppFooter'
     import {largeUrlImage, baseUrlImage} from '../constants'
     import {mapState} from 'vuex'
 
@@ -57,17 +48,6 @@
                 largeUrlImage: largeUrlImage,
             }
         },
-        methods: {
-            goBack() {
-                let realTime = new Date();
-                let endSession = new Date(this.$store.state.registration.newToken.expires_at);
-
-                if (realTime > endSession) {
-                    this.$router.push('/registration')
-                }
-                this.$router.go(-1)
-            }
-        },
         mounted() {
             this.$store.dispatch('filmById', this.id)
         },
@@ -76,9 +56,7 @@
                 film: state => state.filmCard.film,
             })
         },
-        components: {
-            AppFooter,
-        },
+
         name: "FilmCard"
     }
 </script>

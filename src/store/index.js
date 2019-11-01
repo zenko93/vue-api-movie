@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import discover from './moduls/discover'
-import search from './moduls/search'
-import filmCard from './moduls/filmCard'
-import home from './moduls/home'
-import registration from './moduls/registration'
-import axios from 'axios'
-import {apiKey, url3} from "../constants";
+import discover from './modules/discover'
+import search from './modules/search'
+import filmCard from './modules/filmCard'
+import home from './modules/home'
+import registration from './modules/registration'
+import router from './../router'
+
 
 Vue.use(Vuex);
 

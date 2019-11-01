@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import cookies from 'vue-cookies'
 import {apiKey, url3} from "../../constants";
 
 Vue.use(Vuex);
@@ -20,12 +21,16 @@ export default {
     },
     actions: {
         registeredUser({ commit }, payload){
-            console.log(payload);
             commit('GET_USER_REGISTRATION', payload);
+
+            let d = new Date();
+            d.setTime(d.getTime() + (1.5*60*60*1000));
+            let expires = "expires="+ d.toUTCString();
             axios
                 .get(`${url3}/authentication/token/new${apiKey}`)
                 .then(response => {
                     commit('GET_NEW_TOKEN', response.data)
+                    cookies.set("Token", response.data, expires)
                 })
         }
     },

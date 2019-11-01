@@ -1,32 +1,33 @@
 <template>
     <v-app>
         <v-flex class="flex ">
-            <AppBar></AppBar>
             <Carousel></Carousel>
             <Search></Search>
             <FilmsList :posts="popularMovies"></FilmsList>
-            <AppFooter></AppFooter>
         </v-flex>
     </v-app>
 </template>
 
 <script>
-    import AppBar from './AppBar'
     import Carousel from './Carousel'
-    import AppFooter from './AppFooter'
     import FilmsList from './FilmsList'
     import Search from './Search'
     import {mapState} from 'vuex'
 
     export default {
-        data () {
-            return {
-                dataFilms: [],
-                baseUrlImage: 'https://image.tmdb.org/t/p/w185_and_h278_bestv2',
-            }
-        },
         mounted() {
             this.$store.dispatch("getPopular");
+        },
+        methods: {
+            verificationSessionExpire() {
+                let tokenExpires = cookies.get('Token').expires_at
+                let realTime = new Date();
+                let endSession = new Date(tokenExpires);
+
+                if (realTime > endSession) {
+                    this.$router.push('/registration')
+                }
+            }
         },
         computed: {
             ...mapState({
@@ -35,9 +36,7 @@
         },
         name: "HomePage",
         components: {
-            AppBar,
             Carousel,
-            AppFooter,
             FilmsList,
             Search
         }

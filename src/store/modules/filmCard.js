@@ -22,10 +22,9 @@ export default {
                 .get(`${url3}${state.categoryId || 'movie'}/${filmId}${apiKey}`)
                 .then(response => {
                     commit('GET_FILM_BY_ID', response.data);
-                    console.log(response)
                 })
                 .catch(response => {
-                response.response.status === 404 ? router.push('/page-not-found') : null;
+                response.response.status === 404 ? router.replace('/page-not-found') : null;
             });
         },
     },

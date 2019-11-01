@@ -11,11 +11,12 @@ Vue.use(Router);
 export const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
+
   routes: [
     {
       path: '/',
       name: 'HomePage',
-      component: HomePage
+      component: HomePage,
     },
     {
       path: '/film-card/:id',
@@ -46,4 +47,18 @@ export const router = new Router({
     }
 
   ]
-})
+});
+
+// router.beforeRouteLeave((to, from, next) => {
+//   console.log('beforeRouteLeave');
+//   next(false)
+// });
+
+// router.beforeResolve((to, from, next) => {
+//   console.log('from', from)
+//   console.log('to', to)
+//   // router.push({query: Object.assign(from.query, {a: 1})})
+//   // to.query = {q: 'q'}
+//   console.log(to.query)
+//   next()
+// })

@@ -3,7 +3,7 @@ import {apiKey, url3} from "../../constants";
 
 export default {
     state: {
-        getPopular: []
+        getPopular: ''
     },
     mutations: {
         GET_POPULAR(state, payload) {

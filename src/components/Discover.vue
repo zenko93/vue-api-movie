@@ -1,7 +1,6 @@
 <template>
     <v-app>
         <v-flex class="flex column">
-            <AppBar></AppBar>
             <v-card
                     flat
                     class="mx-auto"
@@ -17,7 +16,7 @@
                 >
                     <v-btn exact
                            value="movie"
-                           to="/discover/movie"
+                           :to="{path: '/discover/movie'}"
                            @click="changeCategory('movie')"
 
                     >
@@ -26,7 +25,7 @@
 
                     <v-btn exact
                            value="tv"
-                           to="/discover/tv"
+                           :to="{path: '/discover/tv'}"
                            @click="changeCategory('tv')"
 
                     >
@@ -36,17 +35,18 @@
 
             </v-card>
             <SelectsFilters></SelectsFilters>
-            <FilmsList :posts="posts"></FilmsList>
-            <AppFooter></AppFooter>
+            <FilmsList :posts="cPosts"></FilmsList>
+            <Pagination></Pagination>
+
         </v-flex>
     </v-app>
 </template>
 
 <script>
-    import AppBar from './AppBar'
     import SelectsFilters from './SelectsFilters'
     import FilmsList from './FilmsList'
-    import AppFooter from './AppFooter'
+    import Pagination from './Pagination'
+    import cookies from 'vue-cookies'
     import {mapState, mapMutations} from 'vuex'
 
     export default {
@@ -55,6 +55,9 @@
             return {
             }
         },
+        created() {
+            this.$store.dispatch('getGenres');
+        },
         methods: {
             ...mapMutations([
                 'SET_CATEGORY',
@@ -62,11 +65,25 @@
             changeCategory(category) {
                 return this.SET_CATEGORY(category);
             },
+            verificationSessionExpire() {
+                let tokenExpires = cookies.get('Token').expires_at
+                let realTime = new Date();
+                let endSession = new Date(tokenExpires);
+
+                if (realTime > endSession) {
+                    this.$router.push('/registration')
+                }
+            }
+
         },
         computed: {
             ...mapState({
                 page: state => state.discover.selectedPage,
                 filteredPosts: state => state.discover.filteredPosts,
+                sort_by: state => state.discover.selectedSortBy,
+                year: state => state.discover.selectedYear,
+                genres: state => state.discover.selectedGenres,
+                media_type: state => state.discover.categoryId
             }),
             activeButton: {
                 get() {
@@ -76,24 +93,40 @@
                     this.value = val
                 }
             },
-            posts() {
+            // cParams(){
+            //     return {
+            //         media_type: this.media_type,
+            //         page: this.page,
+            //         sort_by: this.sort_by,
+            //         first_air_date_year: this.year,
+            //         primary_release_year: this.year,
+            //         with_genres: this.genres
+            //     }
+            // },
+            cPosts() {
                 return this.filteredPosts
             },
         },
         mounted() {
             this.$store.dispatch('filteredPosts');
-            this.$store.dispatch('getGenres');
         },
         watch: {
             '$route'() {
                 this.$store.dispatch('filteredPosts');
-            }
+            },
+            // cParams() {
+            //     function logExceptNavigationDuplicated (err) {
+            //         err.name !== 'NavigationDuplicated' && console.error(err)
+            //     }
+            //     // this.$router.replace({query: this.cParams }).catch(logExceptNavigationDuplicated)
+            //     this.$store.dispatch('filteredPosts');
+            //
+            // }
         },
         components: {
-            AppBar,
             SelectsFilters,
             FilmsList,
-            AppFooter
+            Pagination
         },
         name: "Discover"
     }
