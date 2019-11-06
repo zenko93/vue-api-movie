@@ -66,13 +66,16 @@
                 return this.SET_CATEGORY(category);
             },
             verificationSessionExpire() {
-                let tokenExpires = cookies.get('Token').expires_at
-                let realTime = new Date();
-                let endSession = new Date(tokenExpires);
+                let token = cookies.get('Token');
 
-                if (realTime > endSession) {
-                    this.$router.push('/registration')
-                }
+                if (token) {
+                    let realTime = new Date();
+                    let endSession = new Date(token.expires_at);
+
+                    if (realTime > endSession) {
+                        this.$router.push('/registration')
+                    }
+                } else this.$router.push('/registration')
             }
 
         },
@@ -93,35 +96,18 @@
                     this.value = val
                 }
             },
-            // cParams(){
-            //     return {
-            //         media_type: this.media_type,
-            //         page: this.page,
-            //         sort_by: this.sort_by,
-            //         first_air_date_year: this.year,
-            //         primary_release_year: this.year,
-            //         with_genres: this.genres
-            //     }
-            // },
             cPosts() {
                 return this.filteredPosts
             },
         },
         mounted() {
             this.$store.dispatch('filteredPosts');
+            this.verificationSessionExpire()
         },
         watch: {
             '$route'() {
                 this.$store.dispatch('filteredPosts');
             },
-            // cParams() {
-            //     function logExceptNavigationDuplicated (err) {
-            //         err.name !== 'NavigationDuplicated' && console.error(err)
-            //     }
-            //     // this.$router.replace({query: this.cParams }).catch(logExceptNavigationDuplicated)
-            //     this.$store.dispatch('filteredPosts');
-            //
-            // }
         },
         components: {
             SelectsFilters,

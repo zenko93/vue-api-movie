@@ -5,8 +5,20 @@ import FilmCard from "./components/FilmCard";
 import Discover from "./components/Discover";
 import Registration from "./components/Registration";
 import Error404 from "./components/Error404";
+import cookies from 'vue-cookies'
+import store from "./store";
 
 Vue.use(Router);
+
+const ifNotAuthenticated = (to, from, next) => {
+  let token = cookies.get('Token');
+
+  if (!token) {
+    store.commit('LOG_IN', false);
+    next('/registration');
+  }
+  next()
+};
 
 export const router = new Router({
   mode: 'history',
@@ -17,18 +29,21 @@ export const router = new Router({
       path: '/',
       name: 'HomePage',
       component: HomePage,
+      beforeEnter: ifNotAuthenticated
     },
     {
       path: '/film-card/:id',
       props: true,
       name: 'FilmCard',
-      component: FilmCard
+      component: FilmCard,
+      beforeEnter: ifNotAuthenticated
     },
     {
       path: '/discover/:id',
       props: true,
       name: 'Discover',
-      component: Discover
+      component: Discover,
+      beforeEnter: ifNotAuthenticated,
     },
     {
       path: '/registration',

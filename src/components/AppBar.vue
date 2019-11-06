@@ -7,10 +7,10 @@
         >
             <v-list>
                 <v-list-item
-                        v-for="link of links"
+                        v-for="link of changeBtnBar"
                         :key="link.title"
                         :to="link.url"
-                        @click="verificationSessionExpire"
+                        :disabled="link.disabled"
                 >
                     <v-list-item-action>
                         <v-icon>{{link.icon}}</v-icon>
@@ -34,13 +34,16 @@
 
             <v-spacer></v-spacer>
             <div class="hidden-sm-and-down">
+
                 <v-btn text
                        exact
-                       v-for="link in links"
+                       v-for="link in changeBtnBar"
                        :key="link.title"
+                       :disabled="link.disabled"
+                       @click.stop="link.title === 'Log Out' ? changeConfirm() : null"
                        :to="link.url"
-                       @click="verificationSessionExpire"
                 >
+                    <Confirm v-if="confirm"></Confirm>
                     <v-icon left>{{ link.icon }}</v-icon>
                     {{ link.title }}
                 </v-btn>
@@ -52,7 +55,8 @@
 
 <script>
     import {mapState} from 'vuex'
-    import cookies from 'vue-cookies'
+    import Confirm from "./Confirm";
+
 
 
     export default {
@@ -63,19 +67,25 @@
         },
         computed: {
             ...mapState({
-                links: state => state.appBarLinks
-            })
+                links: state => state.appBarLinks,
+                logInUserIcon: state => state.logInUserIcon,
+                flagLogIn: state => state.logIn,
+                confirm: state => state.confirm
+            }),
+            changeBtnBar() {
+                if(this.flagLogIn) {
+                    return this.links
+                }
+                else return this.logInUserIcon
+            }
         },
         methods: {
-            verificationSessionExpire() {
-                let tokenExpires = cookies.get('Token').expires_at
-                let realTime = new Date();
-                let endSession = new Date(tokenExpires);
-
-                if (realTime > endSession) {
-                    this.$router.push('/registration')
-                }
+            changeConfirm() {
+                this.$store.commit('CHANGE_CONFIRM', true)
             }
+        },
+        components: {
+            Confirm
         },
         name: "AppBar"
     }

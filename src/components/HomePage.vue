@@ -19,15 +19,7 @@
             this.$store.dispatch("getPopular");
         },
         methods: {
-            verificationSessionExpire() {
-                let tokenExpires = cookies.get('Token').expires_at
-                let realTime = new Date();
-                let endSession = new Date(tokenExpires);
 
-                if (realTime > endSession) {
-                    this.$router.push('/registration')
-                }
-            }
         },
         computed: {
             ...mapState({

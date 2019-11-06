@@ -13,6 +13,8 @@
                     sm8
                     md5
                 >
+<!--                    <v-toolbar-title class="error" v-if="!this.$store.state.logIn">Your time to visit expired. Login please</v-toolbar-title>-->
+
                     <v-card class="elevation-10">
                         <v-toolbar
                                 color="deep-purple accent-2"
@@ -77,8 +79,6 @@
                             >Create account</v-btn>
                         </v-card-actions>
                     </v-card>
-                    <v-btn @click="getDate"></v-btn>
-
                 </v-flex>
 
             </v-layout>
@@ -87,7 +87,7 @@
 </template>
 
 <script>
-
+    import cookies from 'vue-cookies'
     export default {
         data() {
             return {
@@ -117,7 +117,7 @@
         },
 
         methods: {
-            onSubmit() {
+              onSubmit() {
                 if (this.$refs.form.validate()) {
                     const user = {
                         name: this.name,
@@ -125,22 +125,10 @@
                         password: this.password
                     };
                     this.$store.dispatch('registeredUser', user)
-                    this.$router.push('/');
-                    console.log(user)
+                    this.$store.commit('CHANGE_TITLE_LOGIN');
                 }
             },
-            getDate() {
-                let realTime = new Date();
-                let endSession = new Date(this.$store.state.registration.newToken.expires_at);
-
-                if (realTime > endSession) {
-                    this.$router.push('/registration')
-                }
-                console.log(realTime)
-                console.log(endSession)
-            }
         },
-
         name: "Registration"
     }
 </script>

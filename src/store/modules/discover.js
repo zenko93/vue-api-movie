@@ -5,8 +5,8 @@ import {router} from "../../router";
 export default {
     state: {
         selectedYear: 2019,
-        selectedGenres: '',
-        selectedSortBy: '',
+        selectedGenres: [],
+        selectedSortBy: [],
         selectedPage: 1,
         selectedCategory: 'movie',
         categoryId: 'movie',
@@ -71,41 +71,25 @@ export default {
                 .get(`${url3}genre/movie/list${apiKey}`)
                 .then(response => {
                     commit('SET_GENRES', response.data.genres);
-                    console.log(response.data.genres)
                 })
         },
         changeYear({commit, state}, payload) {
             commit('SET_SELECTED_YEAR', payload)
-            // let param = Object.assign( router.currentRoute.query, {primary_release_year: payload})
-            // commit('SET_GETPARAMS', {primary_release_year: payload})
-            router.push({ query: {a: '1'} }).catch(err => console.log(err))
-
-
-
+            router.push({ query: {...router.currentRoute.query, primary_release_year: state.selectedYear}} ).catch(err => console.log(err))
         },
         changeGenres({commit, state}, payload) {
             commit('SET_SELECTED_GENRES', payload)
-            commit('SET_GETPARAMS', {with_genres: payload})
-            router.push({ query: state.getParams}).catch(err => console.log(err))
-
+            router.push({ query: {...router.currentRoute.query, with_genres: state.selectedGenres}} ).catch(err => console.log(err))
         },
         changeSortBy({commit, state}, payload) {
             commit('SET_SELECTED_SORTBY', payload)
-            commit('SET_GETPARAMS', {sort_by: payload})
-            router.push({ query: state.getParams}).catch(err => console.log(err))
-
-
+            router.push({ query: {...router.currentRoute.query, sort_by: state.selectedSortBy}} ).catch(err => console.log(err))
         },
         changePage({commit, state}, payload) {
             commit('SET_SELECTED_PAGE', payload)
-            commit('SET_GETPARAMS', {page: payload})
-            router.push({ query: state.getParams}).catch(err => console.log(err))
-
+            router.push({ query: {...router.currentRoute.query, page: state.selectedPage}} ).catch(err => console.log(err))
         },
 
-        allGetParams() {
-
-        }
     },
     getters: {
 

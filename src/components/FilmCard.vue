@@ -32,6 +32,7 @@
                 </v-card>
             </v-flex>
         </v-layout>
+        <CarouselRecommendations></CarouselRecommendations>
     </v-app>
 
 </template>
@@ -39,6 +40,7 @@
 <script>
     import {largeUrlImage, baseUrlImage} from '../constants'
     import {mapState} from 'vuex'
+    import CarouselRecommendations from './CarouselRecommendations'
 
     export default {
         props: ['id'],
@@ -55,6 +57,9 @@
             ...mapState({
                 film: state => state.filmCard.film,
             })
+        },
+        components: {
+            CarouselRecommendations
         },
 
         name: "FilmCard"

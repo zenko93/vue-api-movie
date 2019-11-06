@@ -37,6 +37,13 @@
                 }
             },
         },
+        mounted() {
+            const params = this.$router.currentRoute.query;
+
+            if (this.selectedPage !== params.page && params.page) {
+                this.selectedPage = +params.page
+            }
+        },
         watch: {
             // selectedPage() {
             //     this.dispatchFilterMovies()

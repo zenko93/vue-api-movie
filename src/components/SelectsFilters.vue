@@ -39,6 +39,7 @@
 <script>
     import {sortBy} from "../dataSortByFilter";
     import { mapMutations, mapState } from 'vuex'
+    import cookies from 'vue-cookies'
 
     export default {
         data(){
@@ -55,12 +56,25 @@
                     sortBy: this.selectedSortBy,
                     page: this.selectedPage
                 });
+
+                let token = cookies.get('Token');
+                console.log(token)
+
+                if (token) {
+                    let realTime = new Date();
+                    let endSession = new Date(token.expires_at);
+
+                    if (realTime > endSession) {
+                        this.$router.push('/registration')
+                    }
+                } else this.$router.push('/registration')
             },
             ...mapMutations([
                 'SET_SELECTED_YEAR',
                 'SET_SELECTED_GENRES',
                 'SET_SELECTED_SORTBY',
             ]),
+
         },
         computed: {
             ...mapState({
@@ -79,10 +93,8 @@
                 get () {
                     return this.$store.state.discover.selectedGenres;
                 },
-                set (genres) {
-                    // this.SET_SELECTED_GENRES(genres);
-                    this.$store.dispatch('changeGenres', genres)
-
+                set (genre) {
+                    this.$store.dispatch('changeGenres', genre)
                 }
             },
             selectedSortBy: {
@@ -90,10 +102,10 @@
                     return this.$store.state.discover.selectedSortBy;
                 },
                 set (sortBy) {
-                    // this.SET_SELECTED_SORTBY(sortBy);
                     this.$store.dispatch('changeSortBy', sortBy)
                 }
             },
+
         },
         mounted() {
             let date = new Date;
@@ -101,9 +113,21 @@
             let endDate = date.getFullYear();
             let result = [];
 
-            for (let from = startDate; from<=endDate; from++)
-                result.push(from);
+            for (let from = startDate; from<=endDate; from++) result.push(from);
             this.years = result.reverse();
+
+            const params = this.$router.currentRoute.query;
+            if (this.selectedYear !== params.primary_release_year && params.primary_release_year) {
+                this.selectedYear = +params.primary_release_year
+            }
+            if (this.selectedGenres !== params.with_genres && params.with_genres) {
+                let paramInt = params.with_genres.map(item => parseInt(item , 10))
+                this.selectedGenres = paramInt
+            }
+            if (this.selectedSortBy !== params.sort_by && params.sort_by) {
+                this.selectedSortBy = params.sort_by
+            }
+
         },
         name: "SelectsFilters"
     }
