@@ -4,6 +4,7 @@ import HomePage from "./components/HomePage"
 import FilmCard from "./components/FilmCard";
 import Discover from "./components/Discover";
 import Registration from "./components/Registration";
+import PersonalAccount from "./components/PersonalAccount";
 import Error404 from "./components/Error404";
 import cookies from 'vue-cookies'
 import store from "./store";
@@ -12,11 +13,14 @@ Vue.use(Router);
 
 const ifNotAuthenticated = (to, from, next) => {
   let token = cookies.get('Token');
+  let flagLogIn = cookies.get('flagLogIn');
 
   if (!token) {
     store.commit('LOG_IN', false);
     next('/registration');
   }
+  store.commit('LOG_IN', flagLogIn);
+  store.commit('CHANGE_TITLE_LOGIN');
   next()
 };
 
@@ -50,6 +54,13 @@ export const router = new Router({
       props: true,
       name: 'Registration',
       component: Registration
+    },
+    {
+      path: '/account',
+      props: true,
+      name: 'PersonalAccount',
+      component: PersonalAccount,
+      beforeEnter: ifNotAuthenticated
     },
     {
       path: '/page-not-found',

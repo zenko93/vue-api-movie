@@ -56,6 +56,7 @@
 <script>
     import {mapState} from 'vuex'
     import Confirm from "./Confirm";
+    import cookies from 'vue-cookies'
 
 
 
@@ -73,6 +74,8 @@
                 confirm: state => state.confirm
             }),
             changeBtnBar() {
+                let flagLogIn = cookies.get('flagLogIn');
+
                 if(this.flagLogIn) {
                     return this.links
                 }

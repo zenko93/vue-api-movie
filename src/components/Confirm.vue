@@ -46,6 +46,8 @@
                 if(answer === 'agree') {
                     this.$store.commit('CHANGE_CONFIRM', false)
                     cookies.remove('Token');
+                    cookies.remove('flagLogIn');
+                    cookies.remove('userName');
                     this.$router.push('/registration')
                     this.$store.commit('LOG_IN', false);
                 }

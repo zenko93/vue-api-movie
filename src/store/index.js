@@ -6,8 +6,9 @@ import filmCard from './modules/filmCard'
 import home from './modules/home'
 import registration from './modules/registration'
 import axios from "axios";
-import {apiKey, url3} from "../constants";
+import {apiKey, corsKey, url, url3} from "../constants";
 import {router} from "../router";
+import cookies from "vue-cookies";
 
 
 Vue.use(Vuex);
@@ -23,13 +24,14 @@ export default new Vuex.Store({
     state: {
         logIn: false,
         confirm: false,
-        recomFilms: [],
+        addFavoriteMovie: [],
+
         appBarLinks: [
-            {title: '', icon: 'mdi-account'},
+            {title: '', icon: 'mdi-account', url: '/account'},
 
             {title: 'Home', icon: 'mdi-home', url: '/'},
             {title: 'Discover', icon: 'mdi-movie-search', url: '/discover/movie'},
-            {title: 'Log Out', icon: 'mdi-exit-run', url: '/registration'}
+            {title: 'Log Out', icon: 'mdi-exit-run'}
         ],
         logInUserIcon: [
             {title: 'Log In', icon: 'mdi-account'},
@@ -40,28 +42,16 @@ export default new Vuex.Store({
             state.logIn = payload
         },
         CHANGE_TITLE_LOGIN(state) {
-            state.appBarLinks[0].title = state.registration.registeredUser.name
+            state.appBarLinks[0].title = state.registration.registeredUser.name || cookies.get('userName')
         },
         CHANGE_CONFIRM(state, payload) {
             state.confirm = payload
         },
-        SET_RECOMMENDATIONS_FILMS(state, payload) {
-            state.recomFilms = payload
-        }
-    },
-    actions: {
-        getRecommendations({state, commit}, payload) {
-            let category = state.filmCard.categoryId;
-            console.log(router.currentRoute.query)
-            let id = router.currentRoute.query.id
-            axios
-                .get(`${url3}/${category}/${id}/recommendations${apiKey}`)
-                .then(response => {
-                    commit('SET_RECOMMENDATIONS_FILMS', response);
-                    console.log(response)
-                })
+        ADD_FAVORITE_MOVIE(state, payload) {
+            state.addFavoriteMovie.push(payload)
         }
 
     },
+    actions: {},
     getters: {},
 })

@@ -1,5 +1,5 @@
 import axios from "axios";
-import {corsKey} from "../../constants";
+import {corsKey, url} from "../../constants";
 
 export default {
     state: {
@@ -13,7 +13,7 @@ export default {
     actions: {
         liveSearch({commit}, search) {
             axios
-                .get(`${corsKey}/https://www.themoviedb.org/search/trending?&query=${search}`,)
+                .get(`${corsKey}/${url}search/trending?&query=${search}`,)
                 .then(response => {
                     commit('LIVE_SEARCH', response.data.results);
                 })

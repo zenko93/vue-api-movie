@@ -1,37 +1,65 @@
 <template>
-    <v-carousel>
-        <v-carousel-item
-                v-for="(color, i) in films"
-                :key="color"
+    <v-sheet
+            class="mx-auto "
+            elevation="8"
+            max-width="950"
+
+    >
+        <div class="text-center mt-2 flex-row max-h headline">Recomendations</div>
+
+        <v-slide-group
+                v-model="films"
+                class="pa-4"
+                multiple
+                show-arrows
         >
-            <v-sheet
-                    :color="color"
-                    height="100px"
-                    tile
+            <v-slide-item
+                    v-for="film in films"
+                    :key="film.id"
+                    v-slot:default="{ active, toggle }"
+
             >
-                <v-row
-                        class="fill-height"
-                        align="center"
-                        justify="center"
+                <v-card
+                        class="ma-4"
+                        height="200"
+                        width="130"
+                        @click="toggle"
+                        :img="baseUrlImage + film.poster_path"
+                        :href="/film-card/ + film.id"
                 >
-                    <div class="display-3">Slide {{ i + 1 }}</div>
-                </v-row>
-            </v-sheet>
-        </v-carousel-item>
-    </v-carousel>
+                    <v-row
+                            class="fill-height"
+                            align="center"
+                            justify="center"
+                    >
+
+                    </v-row>
+                </v-card>
+            </v-slide-item>
+        </v-slide-group>
+    </v-sheet>
+
 </template>
 
 <script>
     import {mapState} from 'vuex'
+    import {baseUrlImage} from '../constants'
+
     export default {
+        data() {
+            return{
+                baseUrlImage: baseUrlImage,
+            }
+        },
         computed: {
           ...mapState({
-              films: state => state.recomFilms
+              films: state => state.filmCard.recomFilms
           })
         },
-        mounted() {
-            this.$store.commit('getRecommendations')
+        methods: {
+
         },
+
 
         name: "CarouselRecommendations"
     }
