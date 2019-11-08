@@ -32,8 +32,7 @@ export default {
                 .then(response => {
                     commit('GET_NEW_TOKEN', response.data)
                     cookies.set("Token", response.data, expires)
-                    cookies.set("userName", payload.name, expires)
-                    console.log("userName", payload.name)
+                    cookies.set('user', payload, expires)
                 })
                 .then(() => router.push('/'))
                 .then(() => {

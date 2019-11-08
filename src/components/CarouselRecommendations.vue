@@ -1,11 +1,11 @@
-<template>
+<template >
     <v-sheet
             class="mx-auto "
             elevation="8"
             max-width="950"
-
+            v-if="films.length > 0"
     >
-        <div class="text-center mt-2 flex-row max-h headline">Recomendations</div>
+        <div  class="text-center mt-2 flex-row max-h headline">Recomendations</div>
 
         <v-slide-group
                 v-model="films"
@@ -49,6 +49,7 @@
         data() {
             return{
                 baseUrlImage: baseUrlImage,
+                text: 'Recomendations'
             }
         },
         computed: {

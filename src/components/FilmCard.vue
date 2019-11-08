@@ -1,11 +1,9 @@
-<template>
+<template >
     <v-app>
         <v-layout>
             <v-flex xs12 mx-2 my-2>
-
                 <v-card
-
-                        class="d-flex flex-row mb-2"
+                        class="d-flex flex-row mb-2 poster-wrapper"
                 >
                     <v-img
                             :src="largeUrlImage + film.poster_path"
@@ -55,6 +53,7 @@
     import {largeUrlImage, baseUrlImage} from '../constants'
     import {mapState} from 'vuex'
     import CarouselRecommendations from './CarouselRecommendations'
+    import cookies from 'vue-cookies'
 
     export default {
         props: ['id'],
@@ -69,12 +68,12 @@
             this.$store.dispatch('filmById', this.id)
             this.$store.dispatch('getRecommendations',{id: this.id})
             this.$store.dispatch('getKeyTrailer',{id: this.id})
+            this.$store.commit('SET_TRAILER', '')
         },
         computed: {
             ...mapState({
                 film: state => state.filmCard.film,
                 trailer: state => state.filmCard.trailer,
-                favorits: state => state.addFavoriteMovie
             })
         },
         methods: {
@@ -86,8 +85,6 @@
                 if(this.color) {
                     this.$store.commit('ADD_FAVORITE_MOVIE', this.film)
                 }
-                console.log(this.film)
-                console.log(this.favorits)
             }
         },
         components: {

@@ -42,13 +42,16 @@ export default new Vuex.Store({
             state.logIn = payload
         },
         CHANGE_TITLE_LOGIN(state) {
-            state.appBarLinks[0].title = state.registration.registeredUser.name || cookies.get('userName')
+            let user = cookies.get('user')
+            state.appBarLinks[0].title = state.registration.registeredUser.name || user.name
         },
         CHANGE_CONFIRM(state, payload) {
             state.confirm = payload
         },
         ADD_FAVORITE_MOVIE(state, payload) {
             state.addFavoriteMovie.push(payload)
+            cookies.set('favoriteMovies', JSON.stringify(state.addFavoriteMovie))
+            console.log(cookies.get('favoriteMovies'))
         }
 
     },
