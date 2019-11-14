@@ -13,6 +13,7 @@ Vue.use(Router);
 
 const ifNotAuthenticated = (to, from, next) => {
   let token = cookies.get('Token');
+  let sessionId = cookies.get('SessionId')
   let flagLogIn = cookies.get('flagLogIn');
 
   if (!token) {
@@ -72,8 +73,21 @@ export const router = new Router({
       redirect: {name: Error404}
     }
 
-  ]
+  ],
+  scrollBehavior (to, from, savedPosition) {
+    if(savedPosition){
+      return savedPosition
+    }
+    if(to.hash){
+      return {selector: to.hash}
+    }
+    return {
+      x: 0,
+      y: 0,
+    }
+  }
 });
+
 
 // router.beforeRouteLeave((to, from, next) => {
 //   console.log('beforeRouteLeave');

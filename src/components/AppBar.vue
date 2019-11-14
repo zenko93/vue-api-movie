@@ -11,6 +11,7 @@
                         :key="link.title"
                         :to="link.url"
                         :disabled="link.disabled"
+                        @click.stop="link.title === 'Log Out' ? changeConfirm() : null"
                 >
                     <v-list-item-action>
                         <v-icon>{{link.icon}}</v-icon>
@@ -30,9 +31,19 @@
                     @click="drawer = !drawer"
                     class="hidden-md-and-up"
             ></v-app-bar-nav-icon>
-            <v-toolbar-title>Film Database</v-toolbar-title>
+            <v-toolbar-title>{{$t('siteTitle')}}</v-toolbar-title>
 
             <v-spacer></v-spacer>
+            <v-select
+                    outlined
+                    item-text="name"
+                    item-value="id"
+                    class="selectWidth mt-7"
+                    v-model="selectedLanguage"
+                    :items="languages"
+                    menu-props="auto"
+                    @change="setLocal(selectedLanguage)"
+            ></v-select>
             <div class="hidden-sm-and-down">
 
                 <v-btn text
@@ -47,6 +58,7 @@
                     <v-icon left>{{ link.icon }}</v-icon>
                     {{ link.title }}
                 </v-btn>
+
             </div>
         </v-app-bar>
     </div>
@@ -56,9 +68,6 @@
 <script>
     import {mapState} from 'vuex'
     import Confirm from "./Confirm";
-    import cookies from 'vue-cookies'
-
-
 
     export default {
         data() {
@@ -71,21 +80,34 @@
                 links: state => state.appBarLinks,
                 logInUserIcon: state => state.logInUserIcon,
                 flagLogIn: state => state.logIn,
-                confirm: state => state.confirm
+                confirm: state => state.confirm,
+                languages: state => state.languages
             }),
             changeBtnBar() {
-                let flagLogIn = cookies.get('flagLogIn');
-
                 if(this.flagLogIn) {
                     return this.links
                 }
                 else return this.logInUserIcon
+            },
+            selectedLanguage: {
+                get() {
+                    return this.$store.state.selectedLanguage
+                },
+                set(value) {
+                    this.$store.commit('SET_SELECTED_LANG', value)
+                }
             }
         },
         methods: {
             changeConfirm() {
                 this.$store.commit('CHANGE_CONFIRM', true)
+            },
+            setLocal(locale) {
+                // let localForm = locale === 'en-US' ? 'en' : 'ru'
+                this.$i18n.locale = locale
             }
+
+
         },
         components: {
             Confirm
@@ -95,5 +117,7 @@
 </script>
 
 <style scoped>
-
+    .selectWidth{
+        max-width: 100px;
+    }
 </style>

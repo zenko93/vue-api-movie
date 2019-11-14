@@ -17,6 +17,9 @@
     export default {
         mounted() {
             this.$store.dispatch("getPopular");
+            if(this.$route.query.approved){
+                this.$store.dispatch('createSession', this.$route.query.request_token)
+            }
         },
         methods: {
 

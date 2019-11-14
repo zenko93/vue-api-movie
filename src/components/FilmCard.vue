@@ -19,15 +19,17 @@
                             <v-list-item-subtitle class="ml-4">
                                 <v-icon color="yellow">mdi-star</v-icon>
                                 Vote average: {{ film.vote_average }}
-                                <v-btn class="ml-2" @click="getTrailer()">Trailer</v-btn>
+                                <v-btn class="ml-2"  @click="getTrailer()">Trailer</v-btn>
                                 <v-tooltip  bottom>
                                     <template v-slot:activator="{ on }">
-                                        <v-btn  class="ml-2" @click="addFavorite()" v-on="on">
-                                            <v-icon :color="color? 'red': 'black'">mdi-cards-heart</v-icon>
+                                        <v-btn  class="ml-2" @click="statusFavorite()" v-on="on">
+                                            <v-icon :color="isFavorite? 'red': 'black'">mdi-cards-heart</v-icon>
                                         </v-btn>
+
                                     </template>
                                     <span>Add to favorite</span>
                                 </v-tooltip>
+                                  <Alert :type="alert.a401.type" :text="alert.a401.text" v-if="alert.a401.show"></Alert>
                             </v-list-item-subtitle>
                         </v-list-item-content>
 
@@ -40,7 +42,7 @@
                     </v-card>
 
                 </v-card>
-                <div class="text-center" v-html="trailer"></div>
+                <div id="scroll" class="text-center" v-html="trailer"></div>
 
             </v-flex>
         </v-layout>
@@ -53,7 +55,8 @@
     import {largeUrlImage, baseUrlImage} from '../constants'
     import {mapState} from 'vuex'
     import CarouselRecommendations from './CarouselRecommendations'
-    import cookies from 'vue-cookies'
+    import Alert from "./Alert";
+
 
     export default {
         props: ['id'],
@@ -74,21 +77,34 @@
             ...mapState({
                 film: state => state.filmCard.film,
                 trailer: state => state.filmCard.trailer,
-            })
+                categoryID: state => state.discover.categoryId,
+                favorites: state => state.favorites,
+                alert: state => state.filmCard.alert
+            }),
+            isFavorite: {
+                get () {
+                    return this.favorites.find(item => item.id === this.film.id)
+                },
+                set (value) {
+                    this.isFavorite = value
+                }
+            }
         },
         methods: {
             getTrailer() {
                 this.$store.dispatch('getTrailer')
             },
-            addFavorite() {
-                this.color = !this.color
-                if(this.color) {
-                    this.$store.commit('ADD_FAVORITE_MOVIE', this.film)
-                }
+            statusFavorite() {
+                this.$store.dispatch('markAsFavorite', {
+                    media_type: this.categoryID,
+                    media_id: this.id,
+                    favorite: !this.isFavorite
+                });
             }
         },
         components: {
-            CarouselRecommendations
+            CarouselRecommendations,
+            Alert
         },
 
         name: "FilmCard"

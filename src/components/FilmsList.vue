@@ -11,7 +11,6 @@
             >
 
                 <v-card
-                        @click="verificationSessionExpire"
                         :to="'/film-card/' + post.id"
                         width="220"
                 >
@@ -37,7 +36,7 @@
                                 text
                                 :id="post.id"
                         >
-                            Open
+                            {{ $t('btnOpen') }}
                         </v-btn>
                     </v-card-actions>
                 </v-card>
@@ -63,14 +62,6 @@
                 let urlImage = this.baseUrlImage + post.poster_path;
                 return post.poster_path === null ? this.imageNotFound : urlImage
             },
-            verificationSessionExpire() {
-                let realTime = new Date();
-                let endSession = new Date(this.$store.state.registration.newToken.expires_at);
-
-                if (realTime > endSession) {
-                    this.$router.push('/registration')
-                }
-            }
         },
         name: "FilmsList"
 

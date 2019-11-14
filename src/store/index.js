@@ -6,7 +6,7 @@ import filmCard from './modules/filmCard'
 import home from './modules/home'
 import registration from './modules/registration'
 import axios from "axios";
-import {apiKey, corsKey, url, url3} from "../constants";
+import {apiKey, corsKey, url, url3, userId} from "../constants";
 import {router} from "../router";
 import cookies from "vue-cookies";
 
@@ -24,7 +24,18 @@ export default new Vuex.Store({
     state: {
         logIn: false,
         confirm: false,
-        addFavoriteMovie: [],
+        favorites: [],
+        languages: [
+            {
+                name:'Русский',
+                id: 'ru-RU'
+            },
+            {
+                name: 'English',
+                id: 'en-US'
+            }
+            ],
+        selectedLanguage: 'en-US',
 
         appBarLinks: [
             {title: '', icon: 'mdi-account', url: '/account'},
@@ -48,13 +59,24 @@ export default new Vuex.Store({
         CHANGE_CONFIRM(state, payload) {
             state.confirm = payload
         },
-        ADD_FAVORITE_MOVIE(state, payload) {
-            state.addFavoriteMovie.push(payload)
-            cookies.set('favoriteMovies', JSON.stringify(state.addFavoriteMovie))
-            console.log(cookies.get('favoriteMovies'))
+        SET_FAVORITES(state, payload) {
+            state.favorites = payload
+        },
+        SET_SELECTED_LANG(state, payload) {
+            state.selectedLanguage = payload
         }
-
     },
-    actions: {},
+    actions: {
+        getFavorite({commit, rootState, state}) {
+            let sessionId = rootState.registration.newSessionId.length ? rootState.registration.newSessionId : cookies.get('SessionId');
+            let media_type = rootState.discover.categoryId === "movie" ? "movies" : "tv";
+            axios
+                .get(`${url3}account/${userId}/favorite/${media_type}${apiKey}&session_id=${sessionId}&language=${state.selectedLanguage}&sort_by=created_at.desc&page=1`)
+                .then(response => {
+                    commit('SET_FAVORITES', response.data.results)
+                    console.log(response.data)
+                })
+        }
+    },
     getters: {},
 })

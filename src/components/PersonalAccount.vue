@@ -24,7 +24,7 @@
                                     size="150"
                                     tile
                             >
-                                <v-img :src="`https://psv4.userapi.com/c856336/u174528326/docs/d13/3758ef95ba55/IMG_20191107_142137.jpg?extra=_5nU_1Nj6CLc_iqETr79qhQwwKHo0AupkH5hBo3WDk9jntO8wecYkBvfLxujSOL7t5sMjKpgLyiBRKBpIt7lUkKNEoJWx_NUsCvwMjhvalii2SBenVeZEOML7rHBnLVQzVUziUdNSTbyXwIYu4_6lb-THA&dl=1`"></v-img>
+                                <v-img :src="`https://psv4.userapi.com/c856336/u174528326/docs/d13/95d00993c300/IMG_20191107_142137.jpg?extra=pzXTxDqtOetq3KNSS94FQGl5-dvpBLr0eDK-NySM-h7xYiKe6N3oh7FL_osjle5jsyolA8WtvFCuuavLklIVyJS0kdsD_kwIK6hwxqDx6czbxamSQmm0LWqk5E6vT1qpxffyT46GdAVQrqJLT81FNKA&dl=1`"></v-img>
                             </v-avatar>
                         </v-col>
                         <v-col >
@@ -33,8 +33,8 @@
                                     dark
                             >
                                 <v-list-item-content>
-                                    <v-list-item-title class="title">NAME: {{ user.name || getUserData.name}}</v-list-item-title>
-                                    <v-list-item-subtitle>EMAIL: {{ user.email || getUserData.email }}</v-list-item-subtitle>
+                                    <v-list-item-title class="title">{{ $t('name') }}: {{ user.name || getUserData.name}}</v-list-item-title>
+                                    <v-list-item-subtitle>{{ $t('email') }}: {{ user.email || getUserData.email }}</v-list-item-subtitle>
                                 </v-list-item-content>
                             </v-list-item>
                         </v-col>
@@ -44,7 +44,7 @@
 
                     <v-list-item-content>
                         <v-card-title class="flex-row max-h">
-                            Favorite Movies
+                            {{ $t('titlePageAccount') }}
                         </v-card-title>
 
 
@@ -53,7 +53,7 @@
                     <v-divider></v-divider>
 
                     <v-card-text>
-                        <FilmsList :posts="favoriteMovies || favorits"></FilmsList>
+                        <FilmsList :posts="favorites"></FilmsList>
                     </v-card-text>
 
         </v-flex>
@@ -77,20 +77,17 @@
         computed: {
             ...mapState({
                 user: state => state.registration.registeredUser,
-                favorits: state => state.addFavoriteMovie
-
+                favorites: state => state.favorites
             }),
-            favoriteMovies() {
-                 let moviesJSON = cookies.get('favoriteMovies')
-                 let movies = JSON.parse(moviesJSON);
-                 return movies
-            },
             getUserData() {
                 let userCookies = cookies.get('user')
                 return userCookies
             }
-
     },
+        mounted() {
+            this.$store.dispatch('getFavorite')
+            console.log('yo')
+        },
         components: {
             FilmsList
         },

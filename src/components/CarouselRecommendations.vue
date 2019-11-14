@@ -23,16 +23,14 @@
                         class="ma-4"
                         height="200"
                         width="130"
-                        @click="toggle"
-                        :img="baseUrlImage + film.poster_path"
                         :href="/film-card/ + film.id"
+                        :img="baseUrlImage + film.poster_path"
                 >
                     <v-row
                             class="fill-height"
                             align="center"
                             justify="center"
                     >
-
                     </v-row>
                 </v-card>
             </v-slide-item>
@@ -58,10 +56,10 @@
           })
         },
         methods: {
-
+            pushTo(film) {
+                this.$router.push(`/film-card/${film.id}`)
+            }
         },
-
-
         name: "CarouselRecommendations"
     }
 </script>

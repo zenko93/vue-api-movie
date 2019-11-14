@@ -1,6 +1,9 @@
 import axios from "axios";
-import {apiKey, corsKey, url, url3} from "../../constants";
+import {apiKey, corsKey, url, url3, userId} from "../../constants";
 import {router} from "../../router";
+import registration from "./registration";
+import logger from "vuex/dist/logger";
+import cookies from "vue-cookies";
 
 export default {
     state: {
@@ -9,6 +12,19 @@ export default {
         recomFilms: [],
         trailerKey: [],
         trailer: '',
+        alert:
+            {
+                a404: {
+                    show: false,
+                    type: 'error',
+                    text: 'The resource you requested could not be found.'
+                },
+                a401: {
+                    show: false,
+                    type: 'warning',
+                    text: 'Authentication failed: You do not have permissions to access the service.'
+                }
+            },
     },
     mutations: {
         GET_FILM_BY_ID(state, payload) {
@@ -25,6 +41,12 @@ export default {
         },
         SET_TRAILER(state, payload) {
             state.trailer = payload
+        },
+        ALERT_401(state, payload) {
+            state.alert.a401.show = payload
+        },
+        ALERT_404(state, payload) {
+            state.alert.a404.show = payload
         },
     },
     actions: {
@@ -59,8 +81,47 @@ export default {
                 .get(`${corsKey}/${url}video/play?key=${trailerKey}&width=961&height=540&_=1573116214803`)
                 .then(response => {
                     commit('SET_TRAILER', response.data);
+                    router.push({hash: '#scroll'})
                 })
         },
+        markAsFavorite({rootState, commit, dispatch}, payload) {
+            const sessionId = rootState.registration.newSessionId.length ? rootState.registration.newSessionId : cookies.get('SessionId');
+
+            axios
+                .post(`${url3}account/${userId}/favorite${apiKey}&session_id=${sessionId}`,{
+                    media_type: payload.media_type,
+                    media_id: payload.media_id,
+                    favorite: payload.favorite
+            })
+                .then(response => {
+
+                    if(response.data.status_code === 12 || response.data.status_code === 1){
+                        dispatch('getFavorite', null, { root: true })
+                    }
+                    else if(response.data.status_code === 13){
+                        const fav = rootState.favorites.filter(item => item.id !== +payload.media_id);
+                        commit('SET_FAVORITES', fav, { root: true })
+
+                        setTimeout(() => {
+                            commit('ALERT_404', false)
+                        }, 3000);
+                        commit('ALERT_404', true)
+                    }
+                    else if(response.data.status_code === 3) {
+                        setTimeout(() => {
+                            commit('ALERT_401', false)
+                        }, 3000);
+                        commit('ALERT_401', true)
+                    }
+                    else if(response.data.status_code === 34) {
+                        setTimeout(() => {
+                            commit('ALERT_404', false)
+                        }, 3000);
+                        commit('ALERT_404', true)
+                    }
+                })
+                .catch(respons => console.log(respons))
+        }
     },
     getters: {}
 }

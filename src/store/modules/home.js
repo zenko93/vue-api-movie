@@ -11,9 +11,9 @@ export default {
         },
     },
     actions: {
-        getPopular({commit}) {
+        getPopular({commit, rootState}) {
             axios
-                .get(`${url3}movie/popular${apiKey}`,)
+                .get(`${url3}movie/popular${apiKey}&language=${rootState.selectedLanguage}`,)
                 .then(response => {
                     commit('GET_POPULAR', response.data.results);
                 })

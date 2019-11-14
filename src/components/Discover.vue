@@ -8,7 +8,7 @@
                 <v-card-text
                         class="text--primary headline"
                 >
-                    Discover New Movies & TV Shows
+                    {{ $t('discoverTitle') }}
                 </v-card-text>
                 <v-bottom-navigation
                         v-model="activeButton"
@@ -20,7 +20,7 @@
                            @click="changeCategory('movie')"
 
                     >
-                        <span>Movies</span>
+                        <span>{{$t('movies')}}</span>
                     </v-btn>
 
                     <v-btn exact
@@ -29,7 +29,7 @@
                            @click="changeCategory('tv')"
 
                     >
-                        <span>Tv Shows</span>
+                        <span>{{$t('tvShows')}}</span>
                     </v-btn>
                 </v-bottom-navigation>
 
@@ -65,18 +65,6 @@
             changeCategory(category) {
                 return this.SET_CATEGORY(category);
             },
-            verificationSessionExpire() {
-                let token = cookies.get('Token');
-
-                if (token) {
-                    let realTime = new Date();
-                    let endSession = new Date(token.expires_at);
-
-                    if (realTime > endSession) {
-                        this.$router.push('/registration')
-                    }
-                } else this.$router.push('/registration')
-            }
 
         },
         computed: {
@@ -97,12 +85,11 @@
                 }
             },
             cPosts() {
-                return this.filteredPosts
+                return this.filteredPosts.filter(item => item !== null)
             },
         },
         mounted() {
             this.$store.dispatch('filteredPosts');
-            this.verificationSessionExpire()
         },
         watch: {
             '$route'() {

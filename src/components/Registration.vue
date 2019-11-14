@@ -115,7 +115,9 @@
                 ]
             }
         },
-
+        created() {
+            this.$store.dispatch('getToken')
+        },
         methods: {
               onSubmit() {
                 if (this.$refs.form.validate()) {
@@ -125,6 +127,9 @@
                         password: this.password
                     };
                     this.$store.dispatch('registeredUser', user)
+                    this.$store.dispatch('approveToken')
+
+                    this.$store.dispatch('SET_SESSION');
                     this.$store.commit('CHANGE_TITLE_LOGIN');
                 }
             },
