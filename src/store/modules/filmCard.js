@@ -1,8 +1,6 @@
 import axios from "axios";
 import {apiKey, corsKey, url, url3, userId} from "../../constants";
 import {router} from "../../router";
-import registration from "./registration";
-import logger from "vuex/dist/logger";
 import cookies from "vue-cookies";
 
 export default {
@@ -50,10 +48,15 @@ export default {
         },
     },
     actions: {
-        filmById({state, commit, rootState}, filmId ) {
-            commit('GET_CATEGORY_ID', rootState.discover.categoryId);
+        getFilm({commit, dispatch}, payload) {
+            dispatch('filmById', payload)
+            dispatch('getRecommendations', payload)
+            dispatch('getKeyTrailer', payload)
+            commit('SET_TRAILER', '')
+        },
+        filmById({commit, rootState}, payload ) {
             axios
-                .get(`${url3}${state.categoryId || 'movie'}/${filmId}${apiKey}`)
+                .get(`${url3}${rootState.discover.categoryId}/${payload}${apiKey}&language=${rootState.selectedLanguage}`)
                 .then(response => {
                     commit('GET_FILM_BY_ID', response.data);
                 })
@@ -61,16 +64,16 @@ export default {
                 response.response.status === 404 ? router.replace('/page-not-found') : null;
             });
         },
-        getRecommendations({state, commit}, payload) {
+        getRecommendations({commit, rootState}, payload) {
             axios
-                .get(`${url3}${state.categoryId}/${payload.id}/recommendations${apiKey}`)
+                .get(`${url3}${rootState.discover.categoryId}/${payload}/recommendations${apiKey}&language=${rootState.selectedLanguage}`)
                 .then(response => {
                     commit('SET_RECOMMENDATIONS_FILMS', response.data.results);
                 })
         },
-        getKeyTrailer({state, commit}, payload) {
+        getKeyTrailer({commit, rootState}, payload) {
             axios
-                .get(`${url3}${state.categoryId}/${payload.id}/videos${apiKey}`)
+                .get(`${url3}${rootState.discover.categoryId}/${payload}/videos${apiKey}&language=${rootState.selectedLanguage}`)
                 .then(response => {
                     commit('SET_TRAILER_KEY', response.data.results);
                 })

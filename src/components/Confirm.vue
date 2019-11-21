@@ -47,7 +47,8 @@
                     this.$store.commit('CHANGE_CONFIRM', false)
                     cookies.remove('Token');
                     cookies.remove('flagLogIn');
-                    cookies.remove('userName');
+                    cookies.remove('user');
+                    cookies.remove('SessionId');
                     this.$router.push('/registration')
                     this.$store.commit('LOG_IN', false);
                 }

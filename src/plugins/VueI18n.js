@@ -1,37 +1,15 @@
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
+import en from '../locales/en'
+import ru from '../locales/ru'
 
 Vue.use(VueI18n)
 
 export const i18n = new VueI18n({
-    locale: 'en-US',
-    fallbackLocale: 'ru-RU',
+    locale: 'ru-RU',
+    fallbackLocale: 'en-US',
     messages: {
-        'en-US': {
-            siteTitle: 'Film Database',
-            titlePageAccount: 'Favorite movies',
-            name: 'Name',
-            email: 'Email',
-            btnOpen: 'Open',
-            search: 'Search',
-            discoverTitle: 'Discover New Movies & TV Shows',
-            movies: 'Movies',
-            tvShows: 'Tv-shows'
-        },
-        'ru-RU': {
-            siteTitle: 'База данных фильмов',
-            titlePageAccount: 'Любимые фильмы',
-            name: 'Имя',
-            email: 'Почта',
-            btnOpen: 'Открыть',
-            search: 'Поиск',
-            discoverTitle: 'Поиск Новых Фильмов и Сериалов',
-            movies: 'Фильмы',
-            tvShows: 'Сериалы'
-
-
-
-
-        }
+        'en-US': en,
+        'ru-RU': ru
     }
 })

@@ -21,7 +21,7 @@
                             dark
                             flat
                         >
-                            <v-toolbar-title>Log In</v-toolbar-title>
+                            <v-toolbar-title>{{ $t('logIn') }}</v-toolbar-title>
                             <div class="flex-grow-1"></div>
 
                         </v-toolbar>
@@ -31,7 +31,7 @@
                                 v-model="validate"
                             >
                                 <v-text-field
-                                        label="Name"
+                                        :label="$t('name')"
                                         name="name"
                                         prepend-icon="mdi-account"
                                         v-model="name"
@@ -40,7 +40,7 @@
                                 ></v-text-field>
 
                                 <v-text-field
-                                        label="Email"
+                                        :label="$t('email')"
                                         name="email"
                                         type="email"
                                         prepend-icon="mdi-at"
@@ -49,7 +49,7 @@
                                 ></v-text-field>
 
                                 <v-text-field
-                                        label="Password"
+                                        :label="$t('password')"
                                         name="password"
                                         type="password"
                                         prepend-icon="mdi-lock"
@@ -59,7 +59,7 @@
                                 ></v-text-field>
 
                                 <v-text-field
-                                        label="Confirm password"
+                                        :label="$t('confPassword')"
                                         name="password"
                                         type="password"
                                         prepend-icon="mdi-lock"
@@ -76,7 +76,7 @@
                                 @click="onSubmit"
                                 color="primary"
                                 :disabled="!validate"
-                            >Create account</v-btn>
+                            >{{ $t('logIn') }}</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-flex>
@@ -117,7 +117,9 @@
         },
         created() {
             this.$store.dispatch('getToken')
+            this.$router.push({ query: {...this.$router.currentRoute.query, language : this.$store.state.selectedLanguage}} ).catch(err => console.log(err))
         },
+
         methods: {
               onSubmit() {
                 if (this.$refs.form.validate()) {
@@ -130,7 +132,6 @@
                     this.$store.dispatch('approveToken')
 
                     this.$store.dispatch('SET_SESSION');
-                    this.$store.commit('CHANGE_TITLE_LOGIN');
                 }
             },
         },

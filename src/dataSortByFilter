@@ -1,4 +1,4 @@
-export const sortBy = [
+export const sortByEng = [
     {
         name: 'Popularity Ascending',
         id: 'popularity.asc'
@@ -40,20 +40,39 @@ export const sortBy = [
         name: '',
         id: 'release_date.desc'
     },
-    // {
-    //     name: '',
-    //     id: 'revenue.asc'
-    // },
-    // {
-    //     name: '',
-    //     id: 'revenue.desc'
-    // },
-    // {
-    //     name: '',
-    //     id: 'vote_count.asc'
-    // },
-    // {
-    //     name: '',
-    //     id: 'vote_count.desc'
-    // }
 ];
+
+export const sortByRu = [
+    {
+        name: 'Популярность по возрастанию',
+        id: 'popularity.asc'
+    },
+    {
+        name: 'Популярность по убыванию',
+        id: 'popularity.desc'
+    },
+    {
+        name: 'Рейтинг по возрастанию',
+        id: 'vote_average.asc'
+    },
+    {
+        name: 'Рейтинг по убыванию',
+        id: 'vote_average.desc'
+    },
+    {
+        name: 'Дата выпуска по возрастанию',
+        id: 'primary_release_year.asc'
+    },
+    {
+        name: 'Дата выпуска по убыванию',
+        id: 'primary_release_year.desc'
+    },
+    {
+        name: 'Название (Я-А)',
+        id: 'original_title.asc'
+    },
+    {
+        name: 'Название (А-Я)',
+        id: 'original_title.desc'
+    },
+]

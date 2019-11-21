@@ -5,7 +5,7 @@
             max-width="950"
             v-if="films.length > 0"
     >
-        <div  class="text-center mt-2 flex-row max-h headline">Recomendations</div>
+        <div  class="text-center mt-2 flex-row max-h headline">{{ $t('recommendations') }}</div>
 
         <v-slide-group
                 v-model="films"
@@ -19,20 +19,21 @@
                     v-slot:default="{ active, toggle }"
 
             >
-                <v-card
-                        class="ma-4"
-                        height="200"
-                        width="130"
-                        :href="/film-card/ + film.id"
-                        :img="baseUrlImage + film.poster_path"
-                >
-                    <v-row
-                            class="fill-height"
-                            align="center"
-                            justify="center"
+                    <v-card
+                            class="ma-4"
+                            height="200"
+                            width="130"
+                            @click="pushTo(film)"
+                            :img="baseUrlImage + film.poster_path"
                     >
-                    </v-row>
-                </v-card>
+                        <v-row
+                                class="fill-height"
+                                align="center"
+                                justify="center"
+                        >
+                        </v-row>
+                    </v-card>
+
             </v-slide-item>
         </v-slide-group>
     </v-sheet>
@@ -44,10 +45,10 @@
     import {baseUrlImage} from '../constants'
 
     export default {
+        props: ['mediaType'],
         data() {
             return{
                 baseUrlImage: baseUrlImage,
-                text: 'Recomendations'
             }
         },
         computed: {
@@ -57,7 +58,8 @@
         },
         methods: {
             pushTo(film) {
-                this.$router.push(`/film-card/${film.id}`)
+                this.$store.dispatch('getFilm', film.id)
+                this.$router.replace(`/${this.mediaType}/${film.id}`)
             }
         },
         name: "CarouselRecommendations"

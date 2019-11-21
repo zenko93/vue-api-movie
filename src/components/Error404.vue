@@ -1,20 +1,12 @@
 <template>
     <div class="ml-5 mt-2 fill-height">
-        <h1 class="error-title">404 Error</h1>
-        <h2 class="error-content">Oops!—We can't find the page you're looking for.</h2>
+        <h1 class="error-title">{{ $t('error404') }}</h1>
+        <h2 class="error-content">{{ $t('errorMsg') }}</h2>
     </div>
 </template>
 
 <script>
     export default {
-        methods: {
-            goBack() {
-                return this.$router.go(-2)
-            },
-            goHome() {
-                return this.$router.push('/')
-            }
-        },
         name: "Error404"
     }
 </script>

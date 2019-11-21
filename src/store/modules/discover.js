@@ -29,9 +29,6 @@ export default {
         SET_SELECTED_PAGE(state, payload) {
             state.selectedPage = payload;
         },
-        SET_CATEGORY(state, payload) {
-            state.selectedCategory = payload;
-        },
         FILTERED_POSTS(state, payload) {
             state.filteredPosts = payload;
         },
@@ -47,10 +44,6 @@ export default {
         SET_QUERIES(state, payload) {
             state.queryParams = payload;
         },
-        SET_GETPARAMS(state, payload) {
-            Object.assign(state.getParams, payload)
-        }
-
     },
     actions: {
         filteredPosts({state, commit, rootState}) {
@@ -66,9 +59,9 @@ export default {
                     response.response.status === 404 ? router.push('/page-not-found') : null;
                 });
         },
-        getGenres({commit}) {
+        getGenres({commit, rootState}) {
             axios
-                .get(`${url3}genre/movie/list${apiKey}`)
+                .get(`${url3}genre/movie/list${apiKey}&language=${rootState.selectedLanguage}`)
                 .then(response => {
                     commit('SET_GENRES', response.data.genres);
                 })

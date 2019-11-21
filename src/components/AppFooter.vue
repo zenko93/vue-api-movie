@@ -8,38 +8,42 @@
                 no-gutters
         >
             <v-btn
-                    v-for="link in links"
-                    :key="link"
+                    v-if="logIn"
+                    color="white"
+                    text
+                    rounded
+                    class="my-2"
+                    to="/"
+            >
+                {{ $t('home') }}
+            </v-btn>
+            <v-btn
+                    to="/contact-us"
                     color="white"
                     text
                     rounded
                     class="my-2"
             >
-                {{ link }}
+                {{ $t('contactUs') }}
             </v-btn>
             <v-col
                     class="purple darken-3 py-4 text-center white--text"
                     cols="12"
             >
-                {{ new Date().getFullYear() }} — <strong>Film Database</strong>
+                {{ new Date().getFullYear() }} — <strong>{{ $t('siteTitle') }}</strong>
             </v-col>
         </v-row>
     </v-footer>
 </template>
 
 <script>
+    import {mapState} from 'vuex'
+
     export default {
-        data(){
-            return{
-                links: [
-                    'Home',
-                    'About Us',
-                    'Team',
-                    'Services',
-                    'Blog',
-                    'Contact Us',
-                ],
-            }
+        computed: {
+            ...mapState({
+                logIn: state => state.logIn
+            })
         },
         name: "AppFooter"
     }

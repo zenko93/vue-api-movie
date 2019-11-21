@@ -17,11 +17,6 @@
             ...mapMutations([
                 'SET_SELECTED_PAGE'
             ]),
-            // dispatchFilterMovies () {
-            //     this.$store.dispatch("filteredPosts", {
-            //         page: this.selectedPage
-            //     });
-            // },
         },
         computed: {
             ...mapState({
@@ -32,22 +27,15 @@
                     return this.$store.state.discover.selectedPage;
                 },
                 set (page) {
-                    // this.SET_SELECTED_PAGE(page);
                     this.$store.dispatch('changePage', page)
                 }
             },
         },
         mounted() {
             const params = this.$router.currentRoute.query;
-
             if (this.selectedPage !== params.page && params.page) {
                 this.selectedPage = +params.page
             }
-        },
-        watch: {
-            // selectedPage() {
-            //     this.dispatchFilterMovies()
-            // }
         },
         name: "Pagination"
     }

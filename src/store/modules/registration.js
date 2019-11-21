@@ -2,8 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import cookies from 'vue-cookies'
-import {apiKey, corsKey, url3} from "../../constants";
-import {router} from "../../router"
+import {apiKey, url3} from "../../constants";
 
 Vue.use(Vuex);
 
@@ -39,8 +38,9 @@ export default {
                     commit('GET_NEW_TOKEN', response.data)
                 })
         },
-        approveToken({state}){
-            window.location.replace(`https://www.themoviedb.org/authenticate/${state.newToken.request_token}?redirect_to=http://localhost:8080/`)
+        approveToken({state, rootState}){
+            const redirectUrl = process.env.NODE_ENV === 'development' ? `http://localhost:8080/?language=${rootState.selectedLanguage}` : `https://vue-apimoviedb.firebaseapp.com/?language=${rootState.selectedLanguage}`
+            window.location.replace(`https://www.themoviedb.org/authenticate/${state.newToken.request_token}?redirect_to=${redirectUrl}`)
         },
         createSession({commit}, payload) {
             axios
@@ -56,7 +56,7 @@ export default {
     getters: {},
 }
 
-function timeExpires() {
+export function timeExpires() {
     let d = new Date();
     d.setTime(d.getTime() + (60*60*1000));
     let expires = "expires="+ d.toUTCString();

@@ -2,7 +2,7 @@
   <v-app id="app">
     <v-content>
       <AppBar></AppBar>
-      <router-view></router-view>
+      <router-view :key="$route.fullPath"></router-view>
       <AppFooter></AppFooter>
     </v-content>
   </v-app>
@@ -26,29 +26,6 @@ export default {
     ...mapMutations([
       'SET_SELECTED_YEAR',
     ]),
-  },
-  mounted() {
-    // let params = window
-    //         .location
-    //         .search
-    //         .replace('?','')
-    //         .split('&')
-    //         .reduce(
-    //                 function(p,e){
-    //                   let a = e.split('=');
-    //                   p[ decodeURIComponent(a[0])] = decodeURIComponent(a[1]);
-    //                   return p;
-    //                 },
-    //                 {}
-    //         );
-    //
-    // console.log( params);
-    // let params = this.$router.currentRoute.query
-    // console.log(params)
-    // if (params.primary_release_year) {
-    //   console.log(params.primary_release_year)
-    //   return this.$store.commit('SET_SELECTED_YEAR', params.primary_release_year)
-    // }
   },
   components: {
     AppBar,

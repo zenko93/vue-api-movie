@@ -24,7 +24,7 @@
                                     size="150"
                                     tile
                             >
-                                <v-img :src="`https://psv4.userapi.com/c856336/u174528326/docs/d13/95d00993c300/IMG_20191107_142137.jpg?extra=pzXTxDqtOetq3KNSS94FQGl5-dvpBLr0eDK-NySM-h7xYiKe6N3oh7FL_osjle5jsyolA8WtvFCuuavLklIVyJS0kdsD_kwIK6hwxqDx6czbxamSQmm0LWqk5E6vT1qpxffyT46GdAVQrqJLT81FNKA&dl=1`"></v-img>
+                                <v-img :src="`https://psv4.userapi.com/c856336/u174528326/docs/d13/9e7c28e8cbb3/IMG_20191107_142137.jpg?extra=W7h-jF95W7QB5XD93Vn86n96k0uGra5cxWt1le-lIowWPhAQXxVlZ9p68Tfg20-f2sH2d_Z7KcR3yTaq3gIvuPIk75GmvCgGdmI05l4uQG592kezW3SZNHf052y98FgRRd3KBlfi0r_bPFPWZ9nTQ21x&dl=1`"></v-img>
                             </v-avatar>
                         </v-col>
                         <v-col >
@@ -41,19 +41,35 @@
                     </v-row>
                 </v-img>
             </v-card>
-
-                    <v-list-item-content>
+                <v-bottom-navigation
+                        :value="activeButton"
+                        color="deep-purple"
+                        horizontal
+                >
+                    <v-btn
+                            class="mr-10"
+                            value="movie"
+                            to="/account/movie"
+                            @click="getFavPosts('movies')">
                         <v-card-title class="flex-row max-h">
-                            {{ $t('titlePageAccount') }}
+                            {{ $t('favMovie') }}
                         </v-card-title>
+                    </v-btn>
 
-
-                    </v-list-item-content>
+                    <v-btn
+                            value="tv"
+                            to="/account/tv"
+                            @click="getFavPosts('tv')">
+                        <v-card-title class="flex-row max-h">
+                            {{ $t('favTv') }}
+                        </v-card-title>
+                    </v-btn>
+                </v-bottom-navigation>
 
                     <v-divider></v-divider>
 
                     <v-card-text>
-                        <FilmsList :posts="favorites"></FilmsList>
+                        <FilmsList :posts="favorites" :mediaType="id"></FilmsList>
                     </v-card-text>
 
         </v-flex>
@@ -67,26 +83,44 @@
     import FilmsList from './FilmsList'
 
     export default {
+        props: ['id'],
         data() {
             return {
                 items: ['Personal account','Favorite movies'],
                 corsKey: corsKey,
-
+                activeBtn: 0,
+                posts: []
+            }
+        },
+        methods: {
+            getFavPosts(type) {
+                this.$store.commit('SET_FAVORITES', '');
+                this.$store.commit('SET_CATEGORY_ID', this.id);
+                this.$store.dispatch('getFavorite', type);
             }
         },
         computed: {
             ...mapState({
                 user: state => state.registration.registeredUser,
-                favorites: state => state.favorites
+                favorites: state => state.favorites,
             }),
             getUserData() {
                 let userCookies = cookies.get('user')
                 return userCookies
-            }
+            },
+            activeButton: {
+                get() {
+                    return this.$route.params.id
+                },
+                set(val) {
+                    this.value = val
+                }
+            },
     },
         mounted() {
-            this.$store.dispatch('getFavorite')
-            console.log('yo')
+            const id = this.id === 'movie' ? 'movies' : 'tv'
+            this.$store.commit('SET_CATEGORY_ID', this.id);
+            this.$store.dispatch('getFavorite', id)
         },
         components: {
             FilmsList

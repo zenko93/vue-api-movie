@@ -6,9 +6,9 @@
                         class="d-flex flex-row mb-2 poster-wrapper"
                 >
                     <v-img
-                            :src="largeUrlImage + film.poster_path"
-                            width="300px"
-                            height="450px"
+                            :src="middleUrlImage + film.poster_path"
+                            max-width="300px"
+                            max-height="450px"
                     ></v-img>
                     <v-card>
                         <v-list-item-content>
@@ -19,7 +19,7 @@
                             <v-list-item-subtitle class="ml-4">
                                 <v-icon color="yellow">mdi-star</v-icon>
                                 Vote average: {{ film.vote_average }}
-                                <v-btn class="ml-2"  @click="getTrailer()">Trailer</v-btn>
+                                <v-btn class="ml-2"  @click="getTrailer()">{{$t('trailer')}}</v-btn>
                                 <v-tooltip  bottom>
                                     <template v-slot:activator="{ on }">
                                         <v-btn  class="ml-2" @click="statusFavorite()" v-on="on">
@@ -27,7 +27,7 @@
                                         </v-btn>
 
                                     </template>
-                                    <span>Add to favorite</span>
+                                    <span>{{$t('addToFavorite')}}</span>
                                 </v-tooltip>
                                   <Alert :type="alert.a401.type" :text="alert.a401.text" v-if="alert.a401.show"></Alert>
                             </v-list-item-subtitle>
@@ -46,13 +46,13 @@
 
             </v-flex>
         </v-layout>
-        <CarouselRecommendations></CarouselRecommendations>
+        <CarouselRecommendations :mediaType="mediaType"></CarouselRecommendations>
     </v-app>
 
 </template>
 
 <script>
-    import {largeUrlImage, baseUrlImage} from '../constants'
+    import {largeUrlImage, middleUrlImage, baseUrlImage} from '../constants'
     import {mapState} from 'vuex'
     import CarouselRecommendations from './CarouselRecommendations'
     import Alert from "./Alert";
@@ -64,20 +64,18 @@
             return {
                 baseUrlImage: baseUrlImage,
                 largeUrlImage: largeUrlImage,
+                middleUrlImage: middleUrlImage,
                 color: false
             }
         },
         mounted() {
-            this.$store.dispatch('filmById', this.id)
-            this.$store.dispatch('getRecommendations',{id: this.id})
-            this.$store.dispatch('getKeyTrailer',{id: this.id})
-            this.$store.commit('SET_TRAILER', '')
+            this.$store.dispatch('getFilm', this.id)
         },
         computed: {
             ...mapState({
                 film: state => state.filmCard.film,
                 trailer: state => state.filmCard.trailer,
-                categoryID: state => state.discover.categoryId,
+                mediaType: state => state.discover.categoryId,
                 favorites: state => state.favorites,
                 alert: state => state.filmCard.alert
             }),
@@ -96,7 +94,7 @@
             },
             statusFavorite() {
                 this.$store.dispatch('markAsFavorite', {
-                    media_type: this.categoryID,
+                    media_type: this.mediaType,
                     media_id: this.id,
                     favorite: !this.isFavorite
                 });

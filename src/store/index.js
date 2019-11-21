@@ -9,6 +9,7 @@ import axios from "axios";
 import {apiKey, corsKey, url, url3, userId} from "../constants";
 import {router} from "../router";
 import cookies from "vue-cookies";
+import { i18n } from '../plugins/VueI18n'
 
 
 Vue.use(Vuex);
@@ -35,26 +36,11 @@ export default new Vuex.Store({
                 id: 'en-US'
             }
             ],
-        selectedLanguage: 'en-US',
-
-        appBarLinks: [
-            {title: '', icon: 'mdi-account', url: '/account'},
-
-            {title: 'Home', icon: 'mdi-home', url: '/'},
-            {title: 'Discover', icon: 'mdi-movie-search', url: '/discover/movie'},
-            {title: 'Log Out', icon: 'mdi-exit-run'}
-        ],
-        logInUserIcon: [
-            {title: 'Log In', icon: 'mdi-account'},
-            ]
+        selectedLanguage: 'ru-RU',
     },
     mutations: {
         LOG_IN(state, payload) {
             state.logIn = payload
-        },
-        CHANGE_TITLE_LOGIN(state) {
-            let user = cookies.get('user')
-            state.appBarLinks[0].title = state.registration.registeredUser.name || user.name
         },
         CHANGE_CONFIRM(state, payload) {
             state.confirm = payload
@@ -64,17 +50,16 @@ export default new Vuex.Store({
         },
         SET_SELECTED_LANG(state, payload) {
             state.selectedLanguage = payload
+            router.replace({ query: {...router.currentRoute.query, language : payload}} ).catch(err => console.log(err))
         }
     },
     actions: {
-        getFavorite({commit, rootState, state}) {
+        getFavorite({commit, rootState, state}, payload) {
             let sessionId = rootState.registration.newSessionId.length ? rootState.registration.newSessionId : cookies.get('SessionId');
-            let media_type = rootState.discover.categoryId === "movie" ? "movies" : "tv";
             axios
-                .get(`${url3}account/${userId}/favorite/${media_type}${apiKey}&session_id=${sessionId}&language=${state.selectedLanguage}&sort_by=created_at.desc&page=1`)
+                .get(`${url3}account/${userId}/favorite/${payload || 'movies'}${apiKey}&session_id=${sessionId}&language=${state.selectedLanguage}&sort_by=created_at.desc&page=1`)
                 .then(response => {
-                    commit('SET_FAVORITES', response.data.results)
-                    console.log(response.data)
+                        commit('SET_FAVORITES', response.data.results)
                 })
         }
     },

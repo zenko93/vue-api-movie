@@ -3,7 +3,7 @@
         <v-flex class="flex ">
             <Carousel></Carousel>
             <Search></Search>
-            <FilmsList :posts="popularMovies"></FilmsList>
+            <FilmsList :posts="popularMovies" :mediaType="mediaType"></FilmsList>
         </v-flex>
     </v-app>
 </template>
@@ -21,12 +21,11 @@
                 this.$store.dispatch('createSession', this.$route.query.request_token)
             }
         },
-        methods: {
-
-        },
         computed: {
             ...mapState({
                 popularMovies: state => state.home.getPopular,
+                mediaType: state => state.discover.categoryId,
+                language: state => state.selectedLanguage
             })
         },
         name: "HomePage",

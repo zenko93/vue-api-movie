@@ -6,18 +6,41 @@
                 v-model="drawer"
         >
             <v-list>
-                <v-list-item
-                        v-for="link of changeBtnBar"
-                        :key="link.title"
-                        :to="link.url"
-                        :disabled="link.disabled"
-                        @click.stop="link.title === 'Log Out' ? changeConfirm() : null"
-                >
-                    <v-list-item-action>
-                        <v-icon>{{link.icon}}</v-icon>
-                    </v-list-item-action>
+                <v-list-item>
                     <v-list-item-content>
-                        <v-list-item-title v-text="link.title"></v-list-item-title>
+                        <v-btn
+                                exact
+                                text
+                                to="/account/movies"
+                        >
+                                <v-icon class="mr-1">mdi-account</v-icon>
+                                <v-list-item-title>{{ user.name }}</v-list-item-title>
+                        </v-btn>
+
+                        <v-btn
+                                text
+                                to='/'
+                        >
+                                <v-icon left>mdi-home</v-icon>
+                                <v-list-item-title>{{ $t('home') }}</v-list-item-title>
+
+                        </v-btn>
+
+                        <v-btn
+                                text
+                                to="/discover/movie"
+                        >
+                                <v-icon left>mdi-movie-search</v-icon>
+                                <v-list-item-title>{{ $t('discover') }}</v-list-item-title>
+                        </v-btn>
+
+                        <v-btn
+                                text
+                                @click.stop="changeConfirm()"
+                        >
+                                <v-icon class="pl-6">mdi-exit-run</v-icon>
+                                <v-list-item-title>{{ $t('logOut') }}</v-list-item-title>
+                        </v-btn>
                     </v-list-item-content>
                 </v-list-item>
             </v-list>
@@ -25,7 +48,7 @@
         <v-app-bar
                 color="deep-purple accent-4"
                 dark
-                class="mb-3"
+                class="mb-2"
         >
             <v-app-bar-nav-icon
                     @click="drawer = !drawer"
@@ -35,30 +58,55 @@
 
             <v-spacer></v-spacer>
             <v-select
-                    outlined
                     item-text="name"
                     item-value="id"
-                    class="selectWidth mt-7"
+                    class="selectWidth mt-4 mr-2"
                     v-model="selectedLanguage"
                     :items="languages"
                     menu-props="auto"
-                    @change="setLocal(selectedLanguage)"
+                    @change="setLocal()"
             ></v-select>
             <div class="hidden-sm-and-down">
-
-                <v-btn text
-                       exact
-                       v-for="link in changeBtnBar"
-                       :key="link.title"
-                       :disabled="link.disabled"
-                       @click.stop="link.title === 'Log Out' ? changeConfirm() : null"
-                       :to="link.url"
+                <v-btn
+                        text
+                        v-if="flagLogIn"
+                        to='/account/movie'
                 >
-                    <Confirm v-if="confirm"></Confirm>
-                    <v-icon left>{{ link.icon }}</v-icon>
-                    {{ link.title }}
+                    <v-icon left>mdi-account</v-icon>
+                    {{ user.name }}
                 </v-btn>
-
+                <v-btn
+                        text
+                        v-if="flagLogIn"
+                        to='/'
+                >
+                    <v-icon left>mdi-home</v-icon>
+                    {{ $t('home') }}
+                </v-btn>
+                <v-btn
+                        text
+                        v-if="flagLogIn"
+                        to="/discover/movie"
+                >
+                    <v-icon left>mdi-movie-search</v-icon>
+                    {{ $t('discover') }}
+                </v-btn>
+                <v-btn
+                        text
+                        v-if="flagLogIn"
+                        @click.stop="changeConfirm()"
+                >
+                    <v-icon left>mdi-exit-run</v-icon>
+                    {{ $t('logOut') }}
+                </v-btn>
+                <v-btn
+                        text
+                        v-if="!flagLogIn"
+                >
+                    <v-icon left>mdi-account</v-icon>
+                    {{ $t('logIn') }}
+                </v-btn>
+                <Confirm v-if="confirm"></Confirm>
             </div>
         </v-app-bar>
     </div>
@@ -68,46 +116,42 @@
 <script>
     import {mapState} from 'vuex'
     import Confirm from "./Confirm";
+    import cookies from 'vue-cookies'
 
     export default {
         data() {
             return{
-                drawer: false
+                drawer: false,
+                user: cookies.get('user')
             };
         },
         computed: {
             ...mapState({
-                links: state => state.appBarLinks,
-                logInUserIcon: state => state.logInUserIcon,
                 flagLogIn: state => state.logIn,
                 confirm: state => state.confirm,
-                languages: state => state.languages
+                languages: state => state.languages,
+
             }),
-            changeBtnBar() {
-                if(this.flagLogIn) {
-                    return this.links
-                }
-                else return this.logInUserIcon
-            },
             selectedLanguage: {
                 get() {
-                    return this.$store.state.selectedLanguage
+                    return this.$route.query.language || this.$store.state.selectedLanguage
                 },
                 set(value) {
                     this.$store.commit('SET_SELECTED_LANG', value)
                 }
-            }
+            },
+        },
+        mounted() {
+            this.setLocal()
+            // this.$store.commit('SET_SELECTED_LANG', this.$route.query.language)
         },
         methods: {
             changeConfirm() {
                 this.$store.commit('CHANGE_CONFIRM', true)
             },
-            setLocal(locale) {
-                // let localForm = locale === 'en-US' ? 'en' : 'ru'
-                this.$i18n.locale = locale
+            setLocal() {
+                this.$i18n.locale = this.$route.query.language || this.$store.state.selectedLanguage
             }
-
-
         },
         components: {
             Confirm

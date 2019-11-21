@@ -1,35 +1,29 @@
 <template>
     <v-carousel
-            class="mb-3"
+            class="mb-3 my_container"
             cycle
-            hide-delimiter-background
+            hide-delimiters
             show-arrows-on-hover
-            height="400px"
+            height="450"
     >
-        <div
-                class="my_container">
-
-
             <v-carousel-item
                     v-for="post in posts"
                     :key="post.id"
-                    :src="largeUrlImage + post.poster_path"
+                    :src="middleUrlImage + post.poster_path"
+                    class="moi mx-auto"
                     >
             </v-carousel-item>
-        </div>
-
-
     </v-carousel>
 </template>
 
 <script>
-    import {largeUrlImage} from "../constants";
+    import {middleUrlImage} from "../constants";
     import {mapState} from "vuex";
 
     export default {
         data(){
             return{
-                largeUrlImage: largeUrlImage,
+                middleUrlImage: middleUrlImage,
             }
         },
         computed: {
@@ -45,5 +39,8 @@
     .my_container {
         background-color: black;
         width: 100vw;
+    }
+    .moi {
+        width: 300px;
     }
 </style>

@@ -5,6 +5,7 @@ import FilmCard from "./components/FilmCard";
 import Discover from "./components/Discover";
 import Registration from "./components/Registration";
 import PersonalAccount from "./components/PersonalAccount";
+import ContactUs from "./components/ContactUs";
 import Error404 from "./components/Error404";
 import cookies from 'vue-cookies'
 import store from "./store";
@@ -12,16 +13,15 @@ import store from "./store";
 Vue.use(Router);
 
 const ifNotAuthenticated = (to, from, next) => {
-  let token = cookies.get('Token');
-  let sessionId = cookies.get('SessionId')
-  let flagLogIn = cookies.get('flagLogIn');
+  const token = cookies.get('Token');
+  const flagLogIn = cookies.get('flagLogIn');
+
 
   if (!token) {
     store.commit('LOG_IN', false);
     next('/registration');
   }
   store.commit('LOG_IN', flagLogIn);
-  store.commit('CHANGE_TITLE_LOGIN');
   next()
 };
 
@@ -37,9 +37,14 @@ export const router = new Router({
       beforeEnter: ifNotAuthenticated
     },
     {
-      path: '/film-card/:id',
+      path: '/movie/:id',
       props: true,
-      name: 'FilmCard',
+      component: FilmCard,
+      beforeEnter: ifNotAuthenticated
+    },
+    {
+      path: '/tv/:id',
+      props: true,
       component: FilmCard,
       beforeEnter: ifNotAuthenticated
     },
@@ -57,7 +62,14 @@ export const router = new Router({
       component: Registration
     },
     {
-      path: '/account',
+      path: '/contact-us',
+      name: 'ContactUs',
+      component: ContactUs,
+      beforeEnter: ifNotAuthenticated,
+
+    },
+    {
+      path: '/account/:id',
       props: true,
       name: 'PersonalAccount',
       component: PersonalAccount,
@@ -66,7 +78,8 @@ export const router = new Router({
     {
       path: '/page-not-found',
       name: Error404,
-      component: Error404
+      component: Error404,
+      beforeEnter: ifNotAuthenticated
     },
     {
       path: '/*',
@@ -88,17 +101,3 @@ export const router = new Router({
   }
 });
 
-
-// router.beforeRouteLeave((to, from, next) => {
-//   console.log('beforeRouteLeave');
-//   next(false)
-// });
-
-// router.beforeResolve((to, from, next) => {
-//   console.log('from', from)
-//   console.log('to', to)
-//   // router.push({query: Object.assign(from.query, {a: 1})})
-//   // to.query = {q: 'q'}
-//   console.log(to.query)
-//   next()
-// })

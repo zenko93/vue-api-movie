@@ -7,7 +7,8 @@
                 :loading="isLoading"
                 item-text="name"
                 item-value="symbol"
-                placeholder="Search"
+                :placeholder="$t('search')"
+                :noDataText="$t('noDataText')"
                 autofocus
                 dense
         >
@@ -25,7 +26,6 @@
                         small
                         pill
                 >
-
                     <span>  {{ item.vote_average }}</span>
                     <v-avatar>
                         <v-icon small color="yellow">mdi-star</v-icon>
@@ -59,8 +59,9 @@
         },
         methods: {
             openFilmCard(item) {
-                this.$router.push('film-card/' + item.id)
-            }
+                this.$store.commit('SET_CATEGORY_ID', item.media_type);
+                this.$router.push('/'+ item.media_type + '/' + item.id )
+            },
         },
         computed: {
             ...mapState({

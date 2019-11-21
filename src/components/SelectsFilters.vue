@@ -6,13 +6,13 @@
         <v-select
                 v-model="selectedYear"
                 :items="years"
-                label="Year"
+                label=""
                 solo
                 @change="dispatchFilterPosts"
         ></v-select>
         <v-select
                 class="ml-2"
-                label="Genres"
+                :label="$t('genres')"
                 v-model="selectedGenres"
                 solo
                 multiple
@@ -24,9 +24,9 @@
         ></v-select>
         <v-select
                 class="ml-2"
-                label="Sort by..."
+                :label="$t('sortBy')"
                 v-model="selectedSortBy"
-                :items="sortBy"
+                :items="sortBy()"
                 solo
                 item-text="name"
                 item-value="id"
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-    import {sortBy} from "../dataSortByFilter";
+    import {sortByEng, sortByRu} from "../dataSortByFilter";
     import { mapMutations, mapState } from 'vuex'
     import cookies from 'vue-cookies'
 
@@ -45,7 +45,8 @@
         data(){
             return{
                 years: [],
-                sortBy: sortBy,
+                sortByEng: sortByEng,
+                sortByRu: sortByRu,
             }
         },
         methods: {
@@ -74,6 +75,10 @@
                 'SET_SELECTED_GENRES',
                 'SET_SELECTED_SORTBY',
             ]),
+
+            sortBy() {
+                return this.$i18n.locale === 'en-US' ? this.sortByEng : this.sortByRu
+            }
 
         },
         computed: {

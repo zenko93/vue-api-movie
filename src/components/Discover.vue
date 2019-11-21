@@ -16,7 +16,7 @@
                 >
                     <v-btn exact
                            value="movie"
-                           :to="{path: '/discover/movie'}"
+                           to="/discover/movie"
                            @click="changeCategory('movie')"
 
                     >
@@ -25,7 +25,7 @@
 
                     <v-btn exact
                            value="tv"
-                           :to="{path: '/discover/tv'}"
+                           to="/discover/tv"
                            @click="changeCategory('tv')"
 
                     >
@@ -35,7 +35,7 @@
 
             </v-card>
             <SelectsFilters></SelectsFilters>
-            <FilmsList :posts="cPosts"></FilmsList>
+            <FilmsList :posts="cPosts" :mediaType="mediaType"></FilmsList>
             <Pagination></Pagination>
 
         </v-flex>
@@ -59,11 +59,8 @@
             this.$store.dispatch('getGenres');
         },
         methods: {
-            ...mapMutations([
-                'SET_CATEGORY',
-            ]),
             changeCategory(category) {
-                return this.SET_CATEGORY(category);
+                return this.$store.commit('SET_CATEGORY_ID', category);
             },
 
         },
@@ -74,7 +71,7 @@
                 sort_by: state => state.discover.selectedSortBy,
                 year: state => state.discover.selectedYear,
                 genres: state => state.discover.selectedGenres,
-                media_type: state => state.discover.categoryId
+                mediaType: state => state.discover.categoryId
             }),
             activeButton: {
                 get() {
@@ -85,7 +82,7 @@
                 }
             },
             cPosts() {
-                return this.filteredPosts.filter(item => item !== null)
+                return this.filteredPosts
             },
         },
         mounted() {
