@@ -8,7 +8,7 @@
                 :items="years"
                 label=""
                 solo
-                @change="dispatchFilterPosts"
+                @change="timeExpires"
         ></v-select>
         <v-select
                 class="ml-2"
@@ -19,7 +19,7 @@
                 :items="genres"
                 item-text="name"
                 item-value="id"
-                @change="dispatchFilterPosts"
+                @change="timeExpires"
 
         ></v-select>
         <v-select
@@ -30,7 +30,7 @@
                 solo
                 item-text="name"
                 item-value="id"
-                @change="dispatchFilterPosts"
+                @change="timeExpires"
 
         ></v-select>
     </v-col>
@@ -50,16 +50,8 @@
             }
         },
         methods: {
-            dispatchFilterPosts () {
-                this.$store.dispatch("filteredPosts", {
-                    year: this.selectedYear,
-                    genre: this.selectedGenres,
-                    sortBy: this.selectedSortBy,
-                    page: this.selectedPage
-                });
-
+            timeExpires () {
                 let token = cookies.get('Token');
-                console.log(token)
 
                 if (token) {
                     let realTime = new Date();
@@ -75,7 +67,6 @@
                 'SET_SELECTED_GENRES',
                 'SET_SELECTED_SORTBY',
             ]),
-
             sortBy() {
                 return this.$i18n.locale === 'en-US' ? this.sortByEng : this.sortByRu
             }
@@ -121,7 +112,7 @@
             for (let from = startDate; from<=endDate; from++) result.push(from);
             this.years = result.reverse();
 
-            const params = this.$router.currentRoute.query;
+            const params = this.$router.currentRoute.query; /////////////// подгрузка данных страницы по гет парамметрам
             if (this.selectedYear !== params.primary_release_year && params.primary_release_year) {
                 this.selectedYear = +params.primary_release_year
             }

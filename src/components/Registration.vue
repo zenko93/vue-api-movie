@@ -117,7 +117,7 @@
         },
         created() {
             this.$store.dispatch('getToken')
-            this.$router.push({ query: {...this.$router.currentRoute.query, language : this.$store.state.selectedLanguage}} ).catch(err => console.log(err))
+            // this.$router.push({ query: {...this.$router.currentRoute.query, language : this.$store.state.selectedLanguage}} ).catch(err => console.log(err))
         },
 
         methods: {

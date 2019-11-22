@@ -5,7 +5,8 @@
             max-width="950"
             v-if="films.length > 0"
     >
-        <div  class="text-center mt-2 flex-row max-h headline">{{ $t('recommendations') }}</div>
+        <div v-if="mediaType !== 'person'" class="text-center mt-2 flex-row max-h headline">{{ $t('recommendations') }}</div>
+        <div v-if="mediaType === 'person'"  class="text-center mt-2 flex-row max-h headline">{{ $t('filmsWith') + title }}</div>
 
         <v-slide-group
                 v-model="films"
@@ -45,7 +46,7 @@
     import {baseUrlImage} from '../constants'
 
     export default {
-        props: ['mediaType'],
+        props: ['mediaType', 'title'],
         data() {
             return{
                 baseUrlImage: baseUrlImage,
@@ -58,8 +59,7 @@
         },
         methods: {
             pushTo(film) {
-                this.$store.dispatch('getFilm', film.id)
-                this.$router.replace(`/${this.mediaType}/${film.id}`)
+                this.$router.replace(`/${film.media_type || this.mediaType}/${film.id}`)
             }
         },
         name: "CarouselRecommendations"

@@ -28,8 +28,8 @@ export default {
         GET_FILM_BY_ID(state, payload) {
             state.film = payload
         },
-        GET_CATEGORY_ID(state, payload) {
-            state.categoryId = payload
+        SET_FILMS_BY_PERSON(state, payload) {
+            state.recomFilms = payload
         },
         SET_RECOMMENDATIONS_FILMS(state, payload) {
             state.recomFilms = payload
@@ -86,6 +86,11 @@ export default {
                     commit('SET_TRAILER', response.data);
                     router.push({hash: '#scroll'})
                 })
+        },
+        getFilmsByPerson({rootState, commit}, payload) {
+            axios
+                .get(`${url3}person/${payload}/combined_credits${apiKey}&language=${rootState.selectedLanguage}`)
+                .then((response) => commit('SET_FILMS_BY_PERSON', response.data.cast))
         },
         markAsFavorite({rootState, commit, dispatch}, payload) {
             const sessionId = rootState.registration.newSessionId.length ? rootState.registration.newSessionId : cookies.get('SessionId');

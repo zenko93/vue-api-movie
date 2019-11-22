@@ -15,8 +15,9 @@
             <template v-slot:item="{ item }">
                 <v-list-item-content v-on:click="openFilmCard(item)">
                     <v-list-item-title v-text="item.name || item.title || item"></v-list-item-title>
-                    <v-list-item-subtitle v-text="item.media_type === 'movie' ? 'in Movie' : ''"></v-list-item-subtitle>
-                    <v-list-item-subtitle v-text="item.media_type === 'tv' ? 'in Tv Show' : ''"></v-list-item-subtitle>
+                    <v-list-item-subtitle v-text="item.media_type === 'movie' ? 'Movie' : ''"></v-list-item-subtitle>
+                    <v-list-item-subtitle v-text="item.media_type === 'tv' ? 'Tv Show' : ''"></v-list-item-subtitle>
+                    <v-list-item-subtitle v-text="item.media_type === 'person' ? 'Person' : ''"></v-list-item-subtitle>
                 </v-list-item-content>
                 <v-chip
                         v-if="item.vote_average"

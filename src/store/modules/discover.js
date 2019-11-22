@@ -8,7 +8,6 @@ export default {
         selectedGenres: [],
         selectedSortBy: [],
         selectedPage: 1,
-        selectedCategory: 'movie',
         categoryId: 'movie',
         filteredPosts: '',
         genresList: [],
@@ -50,7 +49,7 @@ export default {
             commit('SET_QUERIES', router.currentRoute.query);
             commit('SET_CATEGORY_ID', router.currentRoute.params.id);
             axios
-                .get(`${url3}discover/${state.categoryId}${apiKey}&language=${rootState.selectedLanguage}&media_type=movie&page=${state.selectedPage}&sort_by=${state.selectedSortBy}&first_air_date_year=${state.selectedYear}&primary_release_year=${state.selectedYear}&with_genres=${state.selectedGenres}`)
+                .get(`${url3}discover/${state.categoryId}${apiKey}&language=${rootState.selectedLanguage}&page=${state.selectedPage}&sort_by=${state.selectedSortBy}&first_air_date_year=${state.selectedYear}&primary_release_year=${state.selectedYear}&with_genres=${state.selectedGenres}`)
                 .then(response => {
                     commit('FILTERED_POSTS', response.data.results);
                     commit('SET_TOTAL_PAGES', response.data.total_pages);

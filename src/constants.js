@@ -5,8 +5,9 @@ const url = 'https://www.themoviedb.org/';
 const baseUrlImage = 'https://image.tmdb.org/t/p/w185_and_h278_bestv2';
 const middleUrlImage = 'https://image.tmdb.org/t/p/w300_and_h450_bestv2';
 const largeUrlImage = 'https://image.tmdb.org/t/p/w600_and_h900_bestv2';
-const carouselUrlImage = 'https://image.tmdb.org/t/p/w1400_and_h450_face';
 const imageNotFound = 'https://commercial.bunn.com/img/image-not-available.png';
+const imageNotFound300x450 = 'https://product-images-cdn.liketoknow.it/8mkxW8vmZKr3osdTAbBrkGBoKmSOYxTdpCRIUJqVQxn_LeDfBZM6phP1gvfJPt1ygPXe1TuxDhnRMIi3v9rWFtRfUUYitRCCH1PcOXvWrglQCel2ht_59YA3n6FtRNlyDOnJJnIlxOiVloOCYtCytz.b?v=2&max&height=0&width=300';
+
 const userId = '8742832';
 const alertText = {
     401: 'Authentication failed: You do not have permissions to access the service.',
@@ -14,4 +15,4 @@ const alertText = {
 };
 
 
-export{apiKey, url3, corsKey, url, largeUrlImage, baseUrlImage, imageNotFound, userId, alertText, carouselUrlImage, middleUrlImage}
+export{apiKey, url3, corsKey, url, largeUrlImage, baseUrlImage, imageNotFound, imageNotFound300x450, userId, alertText, middleUrlImage}

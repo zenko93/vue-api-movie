@@ -1,5 +1,5 @@
 import axios from "axios";
-import {corsKey, url} from "../../constants";
+import {apiKey, corsKey, url, url3} from "../../constants";
 
 export default {
     state: {
@@ -11,9 +11,9 @@ export default {
         },
     },
     actions: {
-        liveSearch({commit}, search) {
+        liveSearch({commit, rootState}, search) {
             axios
-                .get(`${corsKey}/${url}search/trending?&query=${search}`,)
+                .get(`${url3}search/multi${apiKey}&language=${rootState.selectedLanguage}&query=${search}&page=1&include_adult=true`,)
                 .then(response => {
                     commit('LIVE_SEARCH', response.data.results);
                 })

@@ -9,6 +9,7 @@
                 <v-list-item>
                     <v-list-item-content>
                         <v-btn
+                                v-if="flagLogIn"
                                 exact
                                 text
                                 to="/account/movies"
@@ -18,6 +19,7 @@
                         </v-btn>
 
                         <v-btn
+                                v-if="flagLogIn"
                                 text
                                 to='/'
                         >
@@ -27,6 +29,7 @@
                         </v-btn>
 
                         <v-btn
+                                v-if="flagLogIn"
                                 text
                                 to="/discover/movie"
                         >
@@ -35,6 +38,7 @@
                         </v-btn>
 
                         <v-btn
+                                v-if="flagLogIn"
                                 text
                                 @click.stop="changeConfirm()"
                         >
@@ -143,7 +147,6 @@
         },
         mounted() {
             this.setLocal()
-            // this.$store.commit('SET_SELECTED_LANG', this.$route.query.language)
         },
         methods: {
             changeConfirm() {

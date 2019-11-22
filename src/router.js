@@ -39,12 +39,21 @@ export const router = new Router({
     {
       path: '/movie/:id',
       props: true,
+      name: 'movie',
       component: FilmCard,
       beforeEnter: ifNotAuthenticated
     },
     {
       path: '/tv/:id',
       props: true,
+      name: 'tv',
+      component: FilmCard,
+      beforeEnter: ifNotAuthenticated
+    },
+    {
+      path: '/person/:id',
+      props: true,
+      name: 'person',
       component: FilmCard,
       beforeEnter: ifNotAuthenticated
     },

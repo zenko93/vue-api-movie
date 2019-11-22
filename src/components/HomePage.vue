@@ -16,6 +16,7 @@
 
     export default {
         mounted() {
+            this.$store.commit('SET_SELECTED_LANG', this.$route.query.language || this.language)
             this.$store.dispatch("getPopular");
             if(this.$route.query.approved){
                 this.$store.dispatch('createSession', this.$route.query.request_token)

@@ -6,7 +6,13 @@
                         class="d-flex flex-row mb-2 poster-wrapper"
                 >
                     <v-img
-                            :src="middleUrlImage + film.poster_path"
+                            :src=" getImage(film.poster_path)"
+                            max-width="300px"
+                            max-height="450px"
+                    ></v-img>
+                    <v-img
+                            v-if="mediaType === 'person'"
+                            :src=" getImage(film.profile_path)"
                             max-width="300px"
                             max-height="450px"
                     ></v-img>
@@ -15,8 +21,12 @@
                             <v-card-title class="flex-row max-h">
                                 {{ film.title || film.name || film.original_title }}
                             </v-card-title>
+                            <v-list-item-subtitle class="ml-4" v-if="mediaType === 'person'">
+                                <div class="mb-1">Birthday: {{ film.birthday }}</div>
+                                <div>Place of birthday: {{ film.place_of_birth }}</div>
+                            </v-list-item-subtitle>
 
-                            <v-list-item-subtitle class="ml-4">
+                            <v-list-item-subtitle class="ml-4" v-if="mediaType !== 'person'">
                                 <v-icon color="yellow">mdi-star</v-icon>
                                 Vote average: {{ film.vote_average }}
                                 <v-btn class="ml-2"  @click="getTrailer()">{{$t('trailer')}}</v-btn>
@@ -36,7 +46,7 @@
                         <v-divider></v-divider>
 
                         <v-card-text>
-                            {{ film.overview }}
+                            {{ film.overview || film.biography}}
                         </v-card-text>
 
                     </v-card>
@@ -46,13 +56,13 @@
 
             </v-flex>
         </v-layout>
-        <CarouselRecommendations :mediaType="mediaType"></CarouselRecommendations>
+        <CarouselRecommendations :mediaType="mediaType" :title="film.name"></CarouselRecommendations>
     </v-app>
 
 </template>
 
 <script>
-    import {largeUrlImage, middleUrlImage, baseUrlImage} from '../constants'
+    import {middleUrlImage, imageNotFound300x450} from '../constants'
     import {mapState} from 'vuex'
     import CarouselRecommendations from './CarouselRecommendations'
     import Alert from "./Alert";
@@ -62,14 +72,15 @@
         props: ['id'],
         data() {
             return {
-                baseUrlImage: baseUrlImage,
-                largeUrlImage: largeUrlImage,
                 middleUrlImage: middleUrlImage,
+                imageNotFound: imageNotFound300x450,
                 color: false
             }
         },
         mounted() {
+            this.$store.commit('SET_CATEGORY_ID', this.$route.name)
             this.$store.dispatch('getFilm', this.id)
+            this.mediaType === 'person' ? this.$store.dispatch('getFilmsByPerson', this.id) : null
         },
         computed: {
             ...mapState({
@@ -98,7 +109,11 @@
                     media_id: this.id,
                     favorite: !this.isFavorite
                 });
-            }
+            },
+            getImage(film) {
+                let urlImage = this.middleUrlImage + film;
+                return film === null ? this.imageNotFound : urlImage
+            },
         },
         components: {
             CarouselRecommendations,

@@ -31,6 +31,7 @@
                     >
                         <span>{{$t('tvShows')}}</span>
                     </v-btn>
+
                 </v-bottom-navigation>
 
             </v-card>
@@ -86,7 +87,7 @@
             },
         },
         mounted() {
-            this.$store.dispatch('filteredPosts');
+            this.$store.dispatch('filteredPosts')
         },
         watch: {
             '$route'() {
