@@ -30,6 +30,13 @@ export default {
     addressCity: 'Saint-Petersburg, 806424',
     addressBuilding: 'Vladimirskiy avenue, 34, office 807',
     error404: '404 Error',
-    errorMsg: "Oops!—We can't find the page you're looking for."
+    errorMsg: "Oops!—We can't find the page you're looking for.",
+    goOut: 'Are you sure you want to go out?',
+    disagree: 'No',
+    agree: 'Yes',
+    birthday: 'Birthday',
+    placeBirthday: 'Place of birthday',
+    voteAverage: 'Vote average',
+    noOverview: 'No overview found.'
 
 }

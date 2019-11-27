@@ -18,7 +18,6 @@
                            value="movie"
                            to="/discover/movie"
                            @click="changeCategory('movie')"
-
                     >
                         <span>{{$t('movies')}}</span>
                     </v-btn>
@@ -27,7 +26,6 @@
                            value="tv"
                            to="/discover/tv"
                            @click="changeCategory('tv')"
-
                     >
                         <span>{{$t('tvShows')}}</span>
                     </v-btn>
@@ -36,7 +34,7 @@
 
             </v-card>
             <SelectsFilters></SelectsFilters>
-            <FilmsList :posts="cPosts" :mediaType="mediaType"></FilmsList>
+            <FilmsList :posts="filteredPosts" :mediaType="mediaType"></FilmsList>
             <Pagination></Pagination>
 
         </v-flex>
@@ -47,15 +45,10 @@
     import SelectsFilters from './SelectsFilters'
     import FilmsList from './FilmsList'
     import Pagination from './Pagination'
-    import cookies from 'vue-cookies'
-    import {mapState, mapMutations} from 'vuex'
+    import {mapState} from 'vuex'
 
     export default {
         props: ['id'],
-        data() {
-            return {
-            }
-        },
         created() {
             this.$store.dispatch('getGenres');
         },
@@ -63,15 +56,10 @@
             changeCategory(category) {
                 return this.$store.commit('SET_CATEGORY_ID', category);
             },
-
         },
         computed: {
             ...mapState({
-                page: state => state.discover.selectedPage,
                 filteredPosts: state => state.discover.filteredPosts,
-                sort_by: state => state.discover.selectedSortBy,
-                year: state => state.discover.selectedYear,
-                genres: state => state.discover.selectedGenres,
                 mediaType: state => state.discover.categoryId
             }),
             activeButton: {
@@ -82,12 +70,9 @@
                     this.value = val
                 }
             },
-            cPosts() {
-                return this.filteredPosts
-            },
         },
         mounted() {
-            this.$store.dispatch('filteredPosts')
+            this.$store.dispatch('filteredPosts');
         },
         watch: {
             '$route'() {

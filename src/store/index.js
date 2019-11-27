@@ -6,10 +6,9 @@ import filmCard from './modules/filmCard'
 import home from './modules/home'
 import registration from './modules/registration'
 import axios from "axios";
-import {apiKey, corsKey, url, url3, userId} from "../constants";
+import {apiKey, url3, userId} from "../constants";
 import {router} from "../router";
 import cookies from "vue-cookies";
-import { i18n } from '../plugins/VueI18n'
 
 
 Vue.use(Vuex);
@@ -42,7 +41,7 @@ export default new Vuex.Store({
         LOG_IN(state, payload) {
             state.logIn = payload
         },
-        CHANGE_CONFIRM(state, payload) {
+        OPEN_LOG_OUT(state, payload) {
             state.confirm = payload
         },
         SET_FAVORITES(state, payload) {

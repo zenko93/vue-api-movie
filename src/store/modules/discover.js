@@ -54,6 +54,12 @@ export default {
                     commit('FILTERED_POSTS', response.data.results);
                     commit('SET_TOTAL_PAGES', response.data.total_pages);
                 })
+                .then(() => router.replace({query: {
+                        page: state.selectedPage,
+                        sort_by: state.selectedSortBy,
+                        primary_release_year: state.selectedYear,
+                        with_genres: state.selectedGenres
+                    }}))
                 .catch(response => {
                     response.response.status === 404 ? router.push('/page-not-found') : null;
                 });
@@ -66,19 +72,19 @@ export default {
                 })
         },
         changeYear({commit, state}, payload) {
-            commit('SET_SELECTED_YEAR', payload)
+            commit('SET_SELECTED_YEAR', payload);
             router.push({ query: {...router.currentRoute.query, primary_release_year: state.selectedYear}} ).catch(err => console.log(err))
         },
         changeGenres({commit, state}, payload) {
-            commit('SET_SELECTED_GENRES', payload)
+            commit('SET_SELECTED_GENRES', payload);
             router.push({ query: {...router.currentRoute.query, with_genres: state.selectedGenres}} ).catch(err => console.log(err))
         },
         changeSortBy({commit, state}, payload) {
-            commit('SET_SELECTED_SORTBY', payload)
+            commit('SET_SELECTED_SORTBY', payload);
             router.push({ query: {...router.currentRoute.query, sort_by: state.selectedSortBy}} ).catch(err => console.log(err))
         },
         changePage({commit, state}, payload) {
-            commit('SET_SELECTED_PAGE', payload)
+            commit('SET_SELECTED_PAGE', payload);
             router.push({ query: {...router.currentRoute.query, page: state.selectedPage}} ).catch(err => console.log(err))
         },
 

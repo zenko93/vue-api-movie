@@ -2,28 +2,28 @@
         <v-row justify="center">
 
             <v-dialog
-                    v-model="confirm"
+                    v-model="toggleExit"
                     max-width="400"
             >
                 <v-card>
-                    <v-card-title class="headline">Are you sure you want to go out?</v-card-title>
+                    <v-card-title class="headline">{{ $t('goOut') }}</v-card-title>
                     <v-card-actions>
                         <v-spacer></v-spacer>
 
                         <v-btn
                                 color="green darken-1"
                                 text
-                                @click="changeConfirm('disagree')"
+                                @click="toggleLogOut(false)"
                         >
-                            Disagree
+                            {{ $t('disagree') }}
                         </v-btn>
 
                         <v-btn
                                 color="green darken-1"
                                 text
-                                @click="changeConfirm('agree')"
+                                @click="toggleLogOut(true)"
                         >
-                            Agree
+                            {{ $t('agree') }}
                         </v-btn>
                     </v-card-actions>
                 </v-card>
@@ -39,21 +39,29 @@
         computed: {
             ...mapState({
                 confirm: state => state.confirm
-            })
+            }),
+            toggleExit: {
+                get() {
+                    return this.confirm
+                },
+                set(value) {
+                    this.$store.commit('OPEN_LOG_OUT', value)
+                }
+            }
         },
         methods: {
-            changeConfirm(answer) {
-                if(answer === 'agree') {
-                    this.$store.commit('CHANGE_CONFIRM', false)
+            toggleLogOut(answer) {
+                if(answer === true) {
+                    this.$store.commit('OPEN_LOG_OUT', false);
                     cookies.remove('Token');
                     cookies.remove('flagLogIn');
                     cookies.remove('user');
                     cookies.remove('SessionId');
-                    this.$router.push('/registration')
+                    this.$router.push('/registration');
                     this.$store.commit('LOG_IN', false);
                 }
                 else {
-                    this.$store.commit('CHANGE_CONFIRM', false)
+                    this.$store.commit('OPEN_LOG_OUT', false)
                 }
             }
         },

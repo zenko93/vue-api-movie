@@ -98,7 +98,7 @@
                 <v-btn
                         text
                         v-if="flagLogIn"
-                        @click.stop="changeConfirm()"
+                        @click.stop="openLogOut()"
                 >
                     <v-icon left>mdi-exit-run</v-icon>
                     {{ $t('logOut') }}
@@ -134,11 +134,10 @@
                 flagLogIn: state => state.logIn,
                 confirm: state => state.confirm,
                 languages: state => state.languages,
-
             }),
             selectedLanguage: {
                 get() {
-                    return this.$route.query.language || this.$store.state.selectedLanguage
+                    return this.$store.state.selectedLanguage
                 },
                 set(value) {
                     this.$store.commit('SET_SELECTED_LANG', value)
@@ -149,8 +148,8 @@
             this.setLocal()
         },
         methods: {
-            changeConfirm() {
-                this.$store.commit('CHANGE_CONFIRM', true)
+            openLogOut() {
+                this.$store.commit('OPEN_LOG_OUT', true)
             },
             setLocal() {
                 this.$i18n.locale = this.$route.query.language || this.$store.state.selectedLanguage

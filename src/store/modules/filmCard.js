@@ -49,9 +49,9 @@ export default {
     },
     actions: {
         getFilm({commit, dispatch}, payload) {
-            dispatch('filmById', payload)
-            dispatch('getRecommendations', payload)
-            dispatch('getKeyTrailer', payload)
+            dispatch('filmById', payload);
+            dispatch('getRecommendations', payload);
+            dispatch('getKeyTrailer', payload);
             commit('SET_TRAILER', '')
         },
         filmById({commit, rootState}, payload ) {
@@ -76,11 +76,12 @@ export default {
                 .get(`${url3}${rootState.discover.categoryId}/${payload}/videos${apiKey}&language=${rootState.selectedLanguage}`)
                 .then(response => {
                     commit('SET_TRAILER_KEY', response.data.results);
+                    response.data.results.length === 0 ? commit('SET_TRAILER', '<div>Trailer is not available </div>') : null;
                 })
         },
         getTrailer({state, commit} ) {
-            let trailerKey = state.trailerKey[0].key
-            axios
+            let trailerKey = state.trailerKey[0].key;
+                axios
                 .get(`${corsKey}/${url}video/play?key=${trailerKey}&width=961&height=540&_=1573116214803`)
                 .then(response => {
                     commit('SET_TRAILER', response.data);
@@ -108,7 +109,7 @@ export default {
                     }
                     else if(response.data.status_code === 13){
                         const fav = rootState.favorites.filter(item => item.id !== +payload.media_id);
-                        commit('SET_FAVORITES', fav, { root: true })
+                        commit('SET_FAVORITES', fav, { root: true });
 
                         setTimeout(() => {
                             commit('ALERT_404', false)

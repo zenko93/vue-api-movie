@@ -24,7 +24,7 @@
                                     size="150"
                                     tile
                             >
-                                <v-img :src="`https://psv4.userapi.com/c856336/u174528326/docs/d13/9e7c28e8cbb3/IMG_20191107_142137.jpg?extra=W7h-jF95W7QB5XD93Vn86n96k0uGra5cxWt1le-lIowWPhAQXxVlZ9p68Tfg20-f2sH2d_Z7KcR3yTaq3gIvuPIk75GmvCgGdmI05l4uQG592kezW3SZNHf052y98FgRRd3KBlfi0r_bPFPWZ9nTQ21x&dl=1`"></v-img>
+                                <v-img src=""></v-img>
                             </v-avatar>
                         </v-col>
                         <v-col >
@@ -78,7 +78,6 @@
 
 <script>
     import {mapState} from 'vuex'
-    import {corsKey} from '../constants'
     import cookies from 'vue-cookies'
     import FilmsList from './FilmsList'
 
@@ -86,10 +85,7 @@
         props: ['id'],
         data() {
             return {
-                items: ['Personal account','Favorite movies'],
-                corsKey: corsKey,
                 activeBtn: 0,
-                posts: []
             }
         },
         methods: {
@@ -105,7 +101,7 @@
                 favorites: state => state.favorites,
             }),
             getUserData() {
-                let userCookies = cookies.get('user')
+                let userCookies = cookies.get('user');
                 return userCookies
             },
             activeButton: {
@@ -118,7 +114,7 @@
             },
     },
         mounted() {
-            const id = this.id === 'movie' ? 'movies' : 'tv'
+            const id = this.id === 'movie' ? 'movies' : 'tv';
             this.$store.commit('SET_CATEGORY_ID', this.id);
             this.$store.dispatch('getFavorite', id)
         },
@@ -130,10 +126,5 @@
 </script>
 
 <style scoped>
-    .basil {
-        background-color: #FFFBE6 !important;
-    }
-    .basil--text {
-        color: #356859 !important;
-    }
+
 </style>

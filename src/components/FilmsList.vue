@@ -9,7 +9,6 @@
                         :key="post.id"
                         class="mr-10"
                 >
-
                     <v-card
                             exact
                             :to="'/'+ mediaType + '/' + post.id"
@@ -22,7 +21,6 @@
                                     class="white--text align-end"
                                     height="278px"
                                     width="185"
-
                                     :src="getImage(post)"
                             >
                             </v-img>
@@ -93,7 +91,7 @@
         height: 220px;
         position: relative;
         box-sizing: border-box;
-        padding: 10px 16px 16px 0px;
+        padding: 10px 16px 16px 0;
         overflow: hidden;
     }
 
@@ -101,7 +99,6 @@
         padding: 10px 5px 0 15px;
     }
     .overview {
-        text-overflow: ellipsis;
         overflow: hidden;
         text-overflow: ellipsis;
         display: -webkit-box;

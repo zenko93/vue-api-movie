@@ -87,7 +87,6 @@
 </template>
 
 <script>
-    import cookies from 'vue-cookies'
     export default {
         data() {
             return {
@@ -117,7 +116,6 @@
         },
         created() {
             this.$store.dispatch('getToken')
-            // this.$router.push({ query: {...this.$router.currentRoute.query, language : this.$store.state.selectedLanguage}} ).catch(err => console.log(err))
         },
 
         methods: {
@@ -128,9 +126,8 @@
                         email: this.email,
                         password: this.password
                     };
-                    this.$store.dispatch('registeredUser', user)
-                    this.$store.dispatch('approveToken')
-
+                    this.$store.dispatch('registeredUser', user);
+                    this.$store.dispatch('approveToken');
                     this.$store.dispatch('SET_SESSION');
                 }
             },

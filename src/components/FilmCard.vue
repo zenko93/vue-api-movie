@@ -6,13 +6,7 @@
                         class="d-flex flex-row mb-2 poster-wrapper"
                 >
                     <v-img
-                            :src=" getImage(film.poster_path)"
-                            max-width="300px"
-                            max-height="450px"
-                    ></v-img>
-                    <v-img
-                            v-if="mediaType === 'person'"
-                            :src=" getImage(film.profile_path)"
+                            :src=" getImage(film.poster_path || film.profile_path)"
                             max-width="300px"
                             max-height="450px"
                     ></v-img>
@@ -22,13 +16,13 @@
                                 {{ film.title || film.name || film.original_title }}
                             </v-card-title>
                             <v-list-item-subtitle class="ml-4" v-if="mediaType === 'person'">
-                                <div class="mb-1">Birthday: {{ film.birthday }}</div>
-                                <div>Place of birthday: {{ film.place_of_birth }}</div>
+                                <div class="mb-1">{{ $t('birthday') }}: {{ film.birthday }}</div>
+                                <div>{{ $t('placeBirthday') }}: {{ film.place_of_birth }}</div>
                             </v-list-item-subtitle>
 
                             <v-list-item-subtitle class="ml-4" v-if="mediaType !== 'person'">
                                 <v-icon color="yellow">mdi-star</v-icon>
-                                Vote average: {{ film.vote_average }}
+                                {{ $t('voteAverage') }}: {{ film.vote_average }}
                                 <v-btn class="ml-2"  @click="getTrailer()">{{$t('trailer')}}</v-btn>
                                 <v-tooltip  bottom>
                                     <template v-slot:activator="{ on }">
@@ -46,7 +40,7 @@
                         <v-divider></v-divider>
 
                         <v-card-text>
-                            {{ film.overview || film.biography}}
+                            {{ film.overview || film.biography || $t('noOverview')}}
                         </v-card-text>
 
                     </v-card>
@@ -74,12 +68,12 @@
             return {
                 middleUrlImage: middleUrlImage,
                 imageNotFound: imageNotFound300x450,
-                color: false
+                color: false,
             }
         },
         mounted() {
-            this.$store.commit('SET_CATEGORY_ID', this.$route.name)
-            this.$store.dispatch('getFilm', this.id)
+            this.$store.commit('SET_CATEGORY_ID', this.$route.name);
+            this.$store.dispatch('getFilm', this.id);
             this.mediaType === 'person' ? this.$store.dispatch('getFilmsByPerson', this.id) : null
         },
         computed: {
@@ -97,7 +91,8 @@
                 set (value) {
                     this.isFavorite = value
                 }
-            }
+            },
+
         },
         methods: {
             getTrailer() {
@@ -112,7 +107,7 @@
             },
             getImage(film) {
                 let urlImage = this.middleUrlImage + film;
-                return film === null ? this.imageNotFound : urlImage
+                return film === null || film === undefined ? this.imageNotFound : urlImage
             },
         },
         components: {

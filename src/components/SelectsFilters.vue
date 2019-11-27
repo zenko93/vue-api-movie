@@ -69,6 +69,15 @@
             ]),
             sortBy() {
                 return this.$i18n.locale === 'en-US' ? this.sortByEng : this.sortByRu
+            },
+            getDates() {
+                let date = new Date;
+                let startDate = 1900;
+                let endDate = date.getFullYear();
+                let result = [];
+
+                for (let from = startDate; from<=endDate; from++) result.push(from);
+                return this.years = result.reverse();
             }
 
         },
@@ -104,21 +113,14 @@
 
         },
         mounted() {
-            let date = new Date;
-            let startDate = 1900;
-            let endDate = date.getFullYear();
-            let result = [];
-
-            for (let from = startDate; from<=endDate; from++) result.push(from);
-            this.years = result.reverse();
+            this.getDates();
 
             const params = this.$router.currentRoute.query; /////////////// подгрузка данных страницы по гет парамметрам
             if (this.selectedYear !== params.primary_release_year && params.primary_release_year) {
                 this.selectedYear = +params.primary_release_year
             }
             if (this.selectedGenres !== params.with_genres && params.with_genres) {
-                let paramInt = params.with_genres.map(item => parseInt(item , 10))
-                this.selectedGenres = paramInt
+                this.selectedGenres = params.with_genres.map(item => parseInt(item , 10));
             }
             if (this.selectedSortBy !== params.sort_by && params.sort_by) {
                 this.selectedSortBy = params.sort_by
